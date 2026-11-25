@@ -113,3 +113,6 @@ Briefs: `briefs/intop-{staff,pos,kiosk,display}.md`. New persona `dilnoza` (Andr
 - POS: «Посмотреть демо» on the connect screen (fake data). Real enrollment needs a one-time code from Business (production write, not done).
 - Kiosk, Display: cannot be enrolled without an owner action. New workflow input `launch_args` starts the debug demo: iOS `-kioskDemo menu -kioskLang uz` / `-displayDemo kitchen`; Android `--es kioskDemo menu` / `--es demo kitchen`. Without it only the connect screen is reachable.
 - Builds are made on the maintainer's Mac (`gradlew :app:assembleDebug`, `xcodebuild -sdk iphonesimulator`, then `openssl enc` with the BUILD_DECRYPT_KEY key); nothing is run on that Mac.
+
+**iOS builds must be ad-hoc signed.** Simulator builds made with `CODE_SIGNING_ALLOWED=NO` have no entitlements, so every Keychain write fails and sign-in shows "Could not keep the sign-in on this phone" / "Secure storage is unavailable" (seen in Staff and Business on 2026-11-25; not an app bug). Build with `CODE_SIGN_IDENTITY=- CODE_SIGNING_ALLOWED=YES CODE_SIGNING_REQUIRED=NO` (assets `staff-ios-0be683d`, `business-ios-0be683d` are signed; `pos/kiosk/display-ios-0be683d` are unsigned: fine for demo mode, rebuild signed before a real login).
+Display brief: the button «Проверить принтер цеха» prints at once; two runs pressed it in demo mode before the brief said not to.
