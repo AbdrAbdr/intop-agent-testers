@@ -29,9 +29,15 @@ if ($List -or $Width -eq 0) {
   "modes ($i entries): " + (($modes.Keys | Sort-Object { [int]($_ -split 'x')[0] }) -join ' ')
   exit 0
 }
-$d = Get-Current; $d.dmPelsWidth = $Width; $d.dmPelsHeight = $Height; $d.dmFields = 0x80000 -bor 0x100000
-$test = [Disp]::ChangeDisplaySettings([ref]$d, 2)      # CDS_TEST
-"test $($Width)x$($Height): code $test (0 = supported)"
-if ($test -eq 0) { "apply: code " + [Disp]::ChangeDisplaySettings([ref]$d, 0); Start-Sleep 2 }
+# Wanted size first, then the common smaller ones that fit inside it (the hosted display accepts custom sizes up to 1920x1080 only)
+$tries = @("${Width}x${Height}") + @('1920x1080','1600x900','1366x768','1280x800','1280x720','1024x768') |
+  Where-Object { $w,$h = $_ -split 'x'; [int]$w -le $Width -and [int]$h -le $Height } | Select-Object -Unique
+foreach ($t in $tries) {
+  $w,$h = $t -split 'x'
+  $d = Get-Current; $d.dmPelsWidth = [int]$w; $d.dmPelsHeight = [int]$h; $d.dmFields = 0x80000 -bor 0x100000
+  $test = [Disp]::ChangeDisplaySettings([ref]$d, 2)      # CDS_TEST
+  "test ${t}: code $test (0 = supported)"
+  if ($test -eq 0) { "apply: code " + [Disp]::ChangeDisplaySettings([ref]$d, 0); Start-Sleep 2; break }
+}
 $cur = Get-Current
-"now: $($cur.dmPelsWidth)x$($cur.dmPelsHeight)"
+"now: $($cur.dmPelsWidth)x$($cur.dmPelsHeight) (wanted ${Width}x${Height})"

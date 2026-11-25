@@ -116,3 +116,23 @@ Briefs: `briefs/intop-{staff,pos,kiosk,display}.md`. New persona `dilnoza` (Andr
 
 **iOS builds must be ad-hoc signed.** Simulator builds made with `CODE_SIGNING_ALLOWED=NO` have no entitlements, so every Keychain write fails and sign-in shows "Could not keep the sign-in on this phone" / "Secure storage is unavailable" (seen in Staff and Business on 2026-11-25; not an app bug). Build with `CODE_SIGN_IDENTITY=- CODE_SIGNING_ALLOWED=YES CODE_SIGNING_REQUIRED=NO` (assets `staff-ios-0be683d`, `business-ios-0be683d` are signed; `pos/kiosk/display-ios-0be683d` are unsigned: fine for demo mode, rebuild signed before a real login).
 Display brief: the button «Проверить принтер цеха» prints at once; two runs pressed it in demo mode before the brief said not to.
+
+
+## Screen-size matrix with reference comparison (2026-11-25)
+
+**Reference devices** (personas with `"reference": true`): `ref-iphone-17-pro-max`, `ref-ipad-pro-13-m4`, `ref-pixel-9-pro-xl`, `ref-pixel-tablet`. Every other mobile persona has `ref` (phones compare with the phone reference, tablets with the tablet one). iOS personas use the iOS 26 simulators (macos-15 has iOS 26.0-26.2 and every needed device type; iPhone 18 and iPhone Duo do not exist). Size spread: iPhone SE 3 / 13 mini / 17, iPad mini / Air 11 (+ landscape variants), small_phone, Pixel 7, Pixel 9 Pro Fold folded and unfolded (`fold`, set through `cmd device_state`, best effort), Nexus 7, 10.1in tablet, role screens `kiosk-*`, `tv-720p|1080p|4k` (display size forced with `wm size`/`wm density` on a tablet image, not an Android TV image), `pos-dual-display` (second display with `overlay_display_devices`). Languages ru, uz, en and large fonts are spread over them.
+
+**Flow.** 1) Run the `ref-*` personas of one app. 2) `bash scripts/collect.sh <run>`. 3) `BUILD_KEY_FILE=<file with the BUILD_DECRYPT_KEY value> bash scripts/publish_reference.sh <run> <app slug>` packs the reference screenshots and `report.md`, encrypts them (AES-256, same key as the builds) and uploads `reference-<app>-<run>.tgz.enc` to the builds release. 4) Run the other personas with `-f reference_run=<run>`: each job downloads the asset (`scripts/fetch_reference.sh`), decrypts it on the runner only, and the agent gets `reference/<ref persona>/NN.png` plus `briefs/reference-compare.md` (compare each screen, report structural differences as bugs with both screenshot paths). Results stay encrypted as before; `reference/` is never uploaded.
+
+```bash
+# 1. reference run (FOOD example; for another app change app_id, builds, brief)
+gh workflow run agent-testers.yml -R AbdrAbdr/intop-agent-testers -f app_dir=. -f framework=native \
+  -f app_id=org.bytebit.intopbussines.dev -f android_build='bash scripts/fetch_build.sh business-android-df68766.apk' -f apk_path=business-android-df68766.apk \
+  -f ios_build='bash scripts/fetch_build.sh business-ios-sim-df68766.zip' -f ios_app_path=ios-app/IntopBusiness.app \
+  -f android_personas=ref-pixel-9-pro-xl,ref-pixel-tablet -f ios_personas=ref-iphone-17-pro-max,ref-ipad-pro-13-m4 -f brief=briefs/intop-business-food.md
+# 2-3. bash scripts/collect.sh <run>; BUILD_KEY_FILE=... bash scripts/publish_reference.sh <run> business-food
+# 4. the matrix (same inputs, other personas, plus -f reference_run=<run>)
+```
+Cost: `bash scripts/cost.sh <run>` (sums `total_cost_usd` after collect). Default model is sonnet; `-f model=haiku` is cheaper. Turn caps stay (80 mobile, 60 desktop).
+
+**Desktop sizes.** `desktop-testers.yml` takes `resolutions` (comma list; each persona runs at each) and `extra_args`. Measured with `display-probe.yml`: Linux Xvfb any size (and two screens with `+xinerama`, persona `pos-dual`); Windows hosted runner switches to 1366x768 and 1920x1080 through `set_resolution.ps1` (2560x1440 is refused: the closest smaller size is used); macOS hosted runner is fixed to a list with a 1920x1080 maximum (no 1366x768, 1280x800 or 2560x1440): `set_resolution_macos.sh` picks the largest mode that fits inside the wanted size. The actual size is written to `results/<persona>/resolution.txt` and given to the agent. Role personas (`kiosk-*`, `board-*`, `ads-*`, `customer-*`, `pos-dual`) add `--role <role>`; the real flag names are pending in the app (`extra_args` covers changes).

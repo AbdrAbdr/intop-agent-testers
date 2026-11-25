@@ -51,8 +51,11 @@ on:
         description: "Bug to reproduce instead of exploring: an issue (owner/repo#123 or its URL) or the steps as text. Agents follow it: read it first"
         default: ""
       model:
-        description: "Model: sonnet, opus, haiku (cheapest) or a full Claude id. With llm_base_url, the provider's model name"
+        description: "Model: sonnet (default), haiku (cheapest) or opus, or a full Claude id. With llm_base_url, the provider's model name"
         default: sonnet
+      reference_run:
+        description: "Run id of a finished REFERENCE run (ref-* personas) that was published with scripts/publish_reference.sh. Every non-reference persona then also gets the decrypted reference screenshots of the same app and must compare each screen with them. Empty = no comparison"
+        default: ""
       llm_base_url:
         description: "Optional: any Anthropic-compatible API instead of Claude (OpenRouter, DeepSeek, Kimi, GLM...), key in the LLM_API_KEY secret. Quality depends on how well the model reads screenshots and reasons: docs/cheaper-models.md"
         default: ""
@@ -238,6 +241,15 @@ jobs:
           GH_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN || github.token }}
         run: bash scripts/bug_report.sh
 
+      - name: Reference screenshots (decrypted here, never uploaded)
+        if: inputs.reference_run != '' && matrix.ref != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_DECRYPT_KEY: ${{ secrets.BUILD_DECRYPT_KEY }}
+          REFERENCE_RUN: ${{ inputs.reference_run }}
+          REF_PERSONA: ${{ matrix.ref }}
+        run: bash scripts/fetch_reference.sh "$REFERENCE_RUN" "$REF_PERSONA"
+
       - name: Emulator + agent
         uses: reactivecircus/android-emulator-runner@v2
         env:
@@ -246,6 +258,13 @@ jobs:
           PERSONA: ${{ matrix.persona }}
           DEVICE: ${{ matrix.device }}
           FONT_SCALE: ${{ matrix.font_scale }}
+          REF_PERSONA: ${{ matrix.ref }}
+          IS_REF: ${{ matrix.is_ref }}
+          ORIENTATION: ${{ matrix.orientation }}
+          WM_SIZE: ${{ matrix.wm_size }}
+          WM_DENSITY: ${{ matrix.wm_density }}
+          SECOND_DISPLAY: ${{ matrix.second_display }}
+          FOLD: ${{ matrix.fold }}
           THEME: ${{ matrix.theme }}
           LOCALE: ${{ matrix.locale }}
           GEO: ${{ matrix.geo }}
@@ -353,8 +372,20 @@ jobs:
           GH_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN || github.token }}
         run: bash scripts/bug_report.sh
 
+      - name: Reference screenshots (decrypted here, never uploaded)
+        if: inputs.reference_run != '' && matrix.ref != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_DECRYPT_KEY: ${{ secrets.BUILD_DECRYPT_KEY }}
+          REFERENCE_RUN: ${{ inputs.reference_run }}
+          REF_PERSONA: ${{ matrix.ref }}
+        run: bash scripts/fetch_reference.sh "$REFERENCE_RUN" "$REF_PERSONA"
+
       - name: Agent
         env:
+          REF_PERSONA: ${{ matrix.ref }}
+          IS_REF: ${{ matrix.is_ref }}
+          ORIENTATION: ${{ matrix.orientation }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           PERSONA: ${{ matrix.persona }}

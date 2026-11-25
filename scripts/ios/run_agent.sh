@@ -18,6 +18,13 @@ BID=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Info.plist" 2
 if [ -n "$BID" ] && [ "$BID" != "$APP_ID" ]; then echo "Bundle id read from the app (differs from app_id)"; APP_ID=$BID; fi
 export APP_ID
 xcrun simctl launch "$UDID" "$APP_ID" ${LAUNCH_ARGS:-}; sleep 8
+# Landscape (iPad): the simulator has no CLI for it, so press Cmd+Left (Rotate Left) in Simulator.app; best effort
+if [ "${ORIENTATION:-}" = landscape ]; then
+  open -a Simulator --args -CurrentDeviceUDID "$UDID"; sleep 6
+  osascript -e 'tell application "System Events" to key code 123 using command down' >/dev/null 2>&1 \
+    && echo "rotated to landscape (key sent)" || echo "landscape rotation FAILED (no accessibility permission?): screens stay portrait"
+  sleep 3
+fi
 # First capture stores the screen width in points for gesture.sh
 python3 scripts/ios/screen.py "$RUNNER_TEMP/warmup" 00 >/dev/null 2>&1 || true
 # Optional screen recording, kept in results/ (encrypted like the rest)
@@ -30,7 +37,7 @@ if [ "${RECORD_VIDEO:-false}" = true ]; then
 fi
 # The agent (another model API if llm_base_url is set)
 source scripts/llm_env.sh || exit 1
-claude -p "Read $BRIEF and personas.json, then do the mission until the final report. PERSONA=$PERSONA PLATFORM=ios APP_ID=$APP_ID. Device: $DEVICE, text size ${TEXT_SIZE:-large}, theme ${THEME:-light}, language $LOCALE. The simulator is already booted and the tools find it on their own (UDID is set): use the commands of the brief directly. Report anything that does not fit this screen (cut text, off-screen buttons, under the notch or home bar, broken layout)." \
+claude -p "Read $BRIEF and personas.json, then do the mission until the final report. PERSONA=$PERSONA PLATFORM=ios APP_ID=$APP_ID. Device: $DEVICE, text size ${TEXT_SIZE:-large}, theme ${THEME:-light}, language $LOCALE${ORIENTATION:+, requested orientation $ORIENTATION}. $(bash scripts/ref_prompt.sh) The simulator is already booted and the tools find it on their own (UDID is set): use the commands of the brief directly. Report anything that does not fit this screen (cut text, off-screen buttons, under the notch or home bar, broken layout)." \
   --model "${MODEL:-sonnet}" --max-turns ${MAX_TURNS:-80} --output-format json \
   --allowedTools "Bash(bash scripts/ios/gesture.sh:*),Bash(python3 scripts/ios/screen.py:*),Bash(python3 scripts/ios/type.py:*),Bash(python3 scripts/ios/type_secret.py:*),Bash(sleep:*),Bash(ls:*),Bash(cat:*),Bash(mkdir:*),Read,Write,Edit" \
   > results/agent-output.json 2> results/agent-errors.txt

@@ -27,6 +27,20 @@ adb install -r -g app.apk || adb install -r app.apk
 adb shell settings put system font_scale "${FONT_SCALE:-1.0}"
 [ "${THEME:-light}" = dark ] && adb shell cmd uimode night yes
 adb emu geo fix "${GEO#*,}" "${GEO%,*}" >/dev/null 2>&1   # longitude first
+# 3b. Screen role / size: display size and density override, landscape, second display, fold state (set before the app starts)
+[ -n "${WM_SIZE:-}" ] && adb shell wm size "$WM_SIZE"
+[ -n "${WM_DENSITY:-}" ] && adb shell wm density "$WM_DENSITY"
+if [ "${ORIENTATION:-}" = landscape ]; then
+  adb shell settings put system accelerometer_rotation 0; adb shell settings put system user_rotation 1
+fi
+[ -n "${SECOND_DISPLAY:-}" ] && adb shell settings put global overlay_display_devices "$SECOND_DISPLAY"
+if [ -n "${FOLD:-}" ]; then   # best effort: pick the device state by name (CLOSED / OPENED) from `cmd device_state`
+  adb shell cmd device_state print-states > "results/$PERSONA/device-states.txt" 2>&1
+  want=$([ "$FOLD" = folded ] && echo CLOSED || echo OPENED)
+  id=$(grep -iE "name='?$want" "results/$PERSONA/device-states.txt" | grep -oE 'identifier=[0-9]+' | head -1 | cut -d= -f2)
+  if [ -n "$id" ]; then adb shell cmd device_state state "$id"; else echo "no $want device state found (see device-states.txt)"; fi
+fi
+sleep 2
 adb shell monkey -p "$APP_ID" -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1
 if [ -n "${LAUNCH_ARGS:-}" ]; then   # debug demo: am start with extras (the app is debuggable)
   ACT=$(adb shell cmd package resolve-activity --brief -c android.intent.category.LAUNCHER "$APP_ID" | tail -1 | tr -d '\r')
@@ -51,7 +65,7 @@ if [ "${RECORD_VIDEO:-false}" = true ]; then
 fi
 # 5. The agent: only the listed tools, nothing else (another model API if llm_base_url is set)
 source scripts/llm_env.sh || exit 1
-claude -p "Read $BRIEF and personas.json, then do the mission until the final report. PERSONA=$PERSONA PLATFORM=android APP_ID=$APP_ID. Device: ${DEVICE}, font scale x${FONT_SCALE:-1.0}, theme ${THEME:-light}, language $LOCALE. Report anything that does not fit this screen (cut text, off-screen buttons, broken layout)." \
+claude -p "Read $BRIEF and personas.json, then do the mission until the final report. PERSONA=$PERSONA PLATFORM=android APP_ID=$APP_ID. Device: ${DEVICE}, font scale x${FONT_SCALE:-1.0}, theme ${THEME:-light}, language $LOCALE.${WM_SIZE:+ Display forced to $WM_SIZE at ${WM_DENSITY:-default} dpi.}${ORIENTATION:+ Orientation: $ORIENTATION.}${SECOND_DISPLAY:+ A second display ($SECOND_DISPLAY) is attached: see the brief on how to capture it with adb shell screencap -d.} $(bash scripts/ref_prompt.sh) Report anything that does not fit this screen (cut text, off-screen buttons, broken layout)." \
   --model "${MODEL:-sonnet}" --max-turns ${MAX_TURNS:-80} --output-format json \
   --allowedTools "Bash(adb:*),Bash(python3 scripts/android/screen.py:*),Bash(python3 scripts/android/type.py:*),Bash(python3 scripts/android/type_secret.py:*),Bash(sleep:*),Bash(ls:*),Bash(cat:*),Bash(mkdir:*),Read,Write,Edit" \
   > results/agent-output.json 2> results/agent-errors.txt

@@ -5,8 +5,18 @@
     "profile": "Retired teacher, 68, low patience with jargon, uses large text.",
     "goal": "Create an account and set up her first item without help.",
     "locale": "en-GB",
-    "geo": [51.5072, -0.1276],
-    "device": {"name": "Small phone, Android 11", "profile": "Nexus 5", "android_api": 30, "font_scale": 1.3, "theme": "light"}
+    "geo": [
+      51.5072,
+      -0.1276
+    ],
+    "device": {
+      "name": "Small phone, Android 11",
+      "profile": "Nexus 5",
+      "android_api": 30,
+      "font_scale": 1.3,
+      "theme": "light"
+    },
+    "ref": "ref-pixel-9-pro-xl"
   },
   {
     "id": "malik",
@@ -14,8 +24,18 @@
     "profile": "Student, 21, skips every text, taps fast, dark mode everywhere.",
     "goal": "Reach the main feature as fast as possible, skipping optional steps.",
     "locale": "en-US",
-    "geo": [40.7128, -74.006],
-    "device": {"name": "Pixel 7, Android 14", "profile": "pixel_7", "android_api": 34, "font_scale": 1.0, "theme": "dark"}
+    "geo": [
+      40.7128,
+      -74.006
+    ],
+    "device": {
+      "name": "Pixel 7, Android 14",
+      "profile": "pixel_7",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "dark"
+    },
+    "ref": "ref-pixel-9-pro-xl"
   },
   {
     "id": "layla",
@@ -23,8 +43,18 @@
     "profile": "Pharmacist, 39, reads Arabic, expects every screen to flow right to left.",
     "goal": "Do the main task end to end and check that text, icons and arrows are mirrored.",
     "locale": "ar-EG",
-    "geo": [30.0444, 31.2357],
-    "device": {"name": "Pixel 6, Android 13", "profile": "pixel_6", "android_api": 33, "font_scale": 1.15, "theme": "light"}
+    "geo": [
+      30.0444,
+      31.2357
+    ],
+    "device": {
+      "name": "Pixel 6, Android 13",
+      "profile": "pixel_6",
+      "android_api": 33,
+      "font_scale": 1.15,
+      "theme": "light"
+    },
+    "ref": "ref-pixel-9-pro-xl"
   },
   {
     "id": "kenji",
@@ -32,8 +62,18 @@
     "profile": "Office worker, 29, reads Japanese, uses the app one-handed on the train.",
     "goal": "Finish the main task in short sessions, leaving the app and coming back.",
     "locale": "ja-JP",
-    "geo": [35.6762, 139.6503],
-    "device": {"name": "Pixel 4, Android 11", "profile": "pixel_4", "android_api": 30, "font_scale": 1.0, "theme": "dark"}
+    "geo": [
+      35.6762,
+      139.6503
+    ],
+    "device": {
+      "name": "Pixel 4, Android 11",
+      "profile": "pixel_4",
+      "android_api": 30,
+      "font_scale": 1.0,
+      "theme": "dark"
+    },
+    "ref": "ref-pixel-9-pro-xl"
   },
   {
     "id": "grace",
@@ -41,8 +81,18 @@
     "profile": "Retired nurse, 74, low vision, uses Android's largest font size (200%).",
     "goal": "Read every screen and complete one task without zooming.",
     "locale": "en-US",
-    "geo": [41.8781, -87.6298],
-    "device": {"name": "Pixel 7, Android 14, 200% font", "profile": "pixel_7", "android_api": 34, "font_scale": 2.0, "theme": "light"}
+    "geo": [
+      41.8781,
+      -87.6298
+    ],
+    "device": {
+      "name": "Pixel 7, Android 14, 200% font",
+      "profile": "pixel_7",
+      "android_api": 34,
+      "font_scale": 2.0,
+      "theme": "light"
+    },
+    "ref": "ref-pixel-9-pro-xl"
   },
   {
     "id": "lucia",
@@ -50,8 +100,18 @@
     "profile": "Teacher, 47, uses the family tablet, reads Spanish.",
     "goal": "Use the main feature on the big screen and judge whether the layout uses the space.",
     "locale": "es-ES",
-    "geo": [40.4168, -3.7038],
-    "device": {"name": "Pixel Tablet, Android 14", "profile": "pixel_tablet", "android_api": 34, "font_scale": 1.0, "theme": "light"}
+    "geo": [
+      40.4168,
+      -3.7038
+    ],
+    "device": {
+      "name": "Pixel Tablet, Android 14",
+      "profile": "pixel_tablet",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "light"
+    },
+    "ref": "ref-pixel-tablet"
   },
   {
     "id": "ravi",
@@ -59,8 +119,18 @@
     "profile": "Shop owner, 44, reads Hindi, new to apps, careful with every button.",
     "goal": "Understand what the app is for and finish one task without English.",
     "locale": "hi-IN",
-    "geo": [28.6139, 77.209],
-    "device": {"name": "Small phone, Android 10", "profile": "Nexus 5X", "android_api": 29, "font_scale": 1.15, "theme": "light"}
+    "geo": [
+      28.6139,
+      77.209
+    ],
+    "device": {
+      "name": "Small phone, Android 10",
+      "profile": "Nexus 5X",
+      "android_api": 29,
+      "font_scale": 1.15,
+      "theme": "light"
+    },
+    "ref": "ref-pixel-9-pro-xl"
   },
   {
     "id": "olga",
@@ -68,8 +138,18 @@
     "profile": "Translator, 36, reads Russian, spots clumsy wording and cut-off labels.",
     "goal": "Go through every settings screen and check that each label fits.",
     "locale": "ru-RU",
-    "geo": [55.7558, 37.6173],
-    "device": {"name": "Pixel 5, Android 12", "profile": "pixel_5", "android_api": 31, "font_scale": 1.0, "theme": "dark"}
+    "geo": [
+      55.7558,
+      37.6173
+    ],
+    "device": {
+      "name": "Pixel 5, Android 12",
+      "profile": "pixel_5",
+      "android_api": 31,
+      "font_scale": 1.0,
+      "theme": "dark"
+    },
+    "ref": "ref-pixel-9-pro-xl"
   },
   {
     "id": "felipe",
@@ -77,8 +157,18 @@
     "profile": "Delivery rider, 27, reads Portuguese, cheap phone, taps fast between deliveries.",
     "goal": "Get to the main feature as fast as possible and use it twice in a row.",
     "locale": "pt-BR",
-    "geo": [-23.5505, -46.6333],
-    "device": {"name": "Pixel 3a, Android 12", "profile": "pixel_3a", "android_api": 31, "font_scale": 1.15, "theme": "light"}
+    "geo": [
+      -23.5505,
+      -46.6333
+    ],
+    "device": {
+      "name": "Pixel 3a, Android 12",
+      "profile": "pixel_3a",
+      "android_api": 31,
+      "font_scale": 1.15,
+      "theme": "light"
+    },
+    "ref": "ref-pixel-9-pro-xl"
   },
   {
     "id": "mehmet",
@@ -86,8 +176,18 @@
     "profile": "Engineer, 33, reads Turkish, types names with İ, ş and ğ, tries odd input.",
     "goal": "Fill every text field with Turkish characters, emoji and very long text.",
     "locale": "tr-TR",
-    "geo": [41.0082, 28.9784],
-    "device": {"name": "Pixel 8, Android 15", "profile": "pixel_8", "android_api": 35, "font_scale": 1.0, "theme": "dark"}
+    "geo": [
+      41.0082,
+      28.9784
+    ],
+    "device": {
+      "name": "Pixel 8, Android 15",
+      "profile": "pixel_8",
+      "android_api": 35,
+      "font_scale": 1.0,
+      "theme": "dark"
+    },
+    "ref": "ref-pixel-9-pro-xl"
   },
   {
     "id": "dilnoza",
@@ -95,8 +195,18 @@
     "profile": "Waitress in Tashkent, 27, reads Uzbek (Latin), checks that every label is translated and fits.",
     "goal": "Do the main task and check every Uzbek text.",
     "locale": "uz-UZ",
-    "geo": [41.2995, 69.2401],
-    "device": {"name": "Pixel 7, Android 14", "profile": "pixel_7", "android_api": 34, "font_scale": 1.0, "theme": "light"}
+    "geo": [
+      41.2995,
+      69.2401
+    ],
+    "device": {
+      "name": "Pixel 7, Android 14",
+      "profile": "pixel_7",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "light"
+    },
+    "ref": "ref-pixel-9-pro-xl"
   },
   {
     "id": "clara",
@@ -104,8 +214,17 @@
     "profile": "Designer, 34, notices every misaligned pixel, refuses location access.",
     "goal": "Explore the app and judge whether it is worth paying for.",
     "locale": "fr-FR",
-    "geo": [48.8566, 2.3522],
-    "device": {"simulator": "iPhone SE (3rd generation)", "ios": 18, "text_size": "large", "theme": "light"}
+    "geo": [
+      48.8566,
+      2.3522
+    ],
+    "device": {
+      "simulator": "iPhone SE (3rd generation)",
+      "ios": 18,
+      "text_size": "large",
+      "theme": "light"
+    },
+    "ref": "ref-iphone-17-pro-max"
   },
   {
     "id": "jonas",
@@ -113,8 +232,17 @@
     "profile": "Engineer, 45, uses an iPad with a large accessibility text size.",
     "goal": "Complete the main task, then try to break it with odd inputs.",
     "locale": "de-DE",
-    "geo": [52.52, 13.405],
-    "device": {"simulator": "iPad Air 11-inch (M2)", "ios": 18, "text_size": "accessibility-extra-large", "theme": "dark"}
+    "geo": [
+      52.52,
+      13.405
+    ],
+    "device": {
+      "simulator": "iPad Air 11-inch (M2)",
+      "ios": 18,
+      "text_size": "accessibility-extra-large",
+      "theme": "dark"
+    },
+    "ref": "ref-ipad-pro-13-m4"
   },
   {
     "id": "noah",
@@ -122,8 +250,17 @@
     "profile": "Sales rep, 41, big iPhone, the largest standard text size, always in a hurry.",
     "goal": "Do the main task quickly between two meetings.",
     "locale": "en-US",
-    "geo": [30.2672, -97.7431],
-    "device": {"simulator": "iPhone 16 Pro Max", "ios": 18, "text_size": "extra-extra-extra-large", "theme": "light"}
+    "geo": [
+      30.2672,
+      -97.7431
+    ],
+    "device": {
+      "simulator": "iPhone 16 Pro Max",
+      "ios": 18,
+      "text_size": "extra-extra-extra-large",
+      "theme": "light"
+    },
+    "ref": "ref-iphone-17-pro-max"
   },
   {
     "id": "yuki",
@@ -131,8 +268,17 @@
     "profile": "Student, 20, reads Japanese, dark mode, expects a polished app.",
     "goal": "Explore everything and decide whether she would recommend it to a friend.",
     "locale": "ja-JP",
-    "geo": [34.6937, 135.5023],
-    "device": {"simulator": "iPhone 16", "ios": 18, "text_size": "medium", "theme": "dark"}
+    "geo": [
+      34.6937,
+      135.5023
+    ],
+    "device": {
+      "simulator": "iPhone 16",
+      "ios": 18,
+      "text_size": "medium",
+      "theme": "dark"
+    },
+    "ref": "ref-iphone-17-pro-max"
   },
   {
     "id": "amira",
@@ -140,8 +286,17 @@
     "profile": "Product manager, 31, reads Arabic, expects a mirrored right-to-left layout.",
     "goal": "Complete the main task and check that navigation, icons and numbers read right to left.",
     "locale": "ar-SA",
-    "geo": [24.7136, 46.6753],
-    "device": {"simulator": "iPhone 16 Pro", "ios": 18, "text_size": "large", "theme": "light"}
+    "geo": [
+      24.7136,
+      46.6753
+    ],
+    "device": {
+      "simulator": "iPhone 16 Pro",
+      "ios": 18,
+      "text_size": "large",
+      "theme": "light"
+    },
+    "ref": "ref-iphone-17-pro-max"
   },
   {
     "id": "mateo",
@@ -149,8 +304,17 @@
     "profile": "Musician, 26, reads Spanish, holds an iPad mini in one hand.",
     "goal": "Use the main feature, leave the app in the middle of it, then come back.",
     "locale": "es-MX",
-    "geo": [19.4326, -99.1332],
-    "device": {"simulator": "iPad mini (A17 Pro)", "ios": 18, "text_size": "large", "theme": "light"}
+    "geo": [
+      19.4326,
+      -99.1332
+    ],
+    "device": {
+      "simulator": "iPad mini (A17 Pro)",
+      "ios": 18,
+      "text_size": "large",
+      "theme": "light"
+    },
+    "ref": "ref-ipad-pro-13-m4"
   },
   {
     "id": "sven",
@@ -158,8 +322,17 @@
     "profile": "Retired engineer, 80, reads Swedish, the largest accessibility text on a small iPhone.",
     "goal": "Complete one task: every button must stay readable and reachable.",
     "locale": "sv-SE",
-    "geo": [59.3293, 18.0686],
-    "device": {"simulator": "iPhone SE (3rd generation)", "ios": 18, "text_size": "accessibility-extra-extra-extra-large", "theme": "dark"}
+    "geo": [
+      59.3293,
+      18.0686
+    ],
+    "device": {
+      "simulator": "iPhone SE (3rd generation)",
+      "ios": 18,
+      "text_size": "accessibility-extra-extra-extra-large",
+      "theme": "dark"
+    },
+    "ref": "ref-iphone-17-pro-max"
   },
   {
     "id": "giulia",
@@ -167,8 +340,17 @@
     "profile": "Lawyer, 55, reads Italian, larger accessibility text, reads every word.",
     "goal": "Read every screen, including the fine print, and check that no text is cut off.",
     "locale": "it-IT",
-    "geo": [41.9028, 12.4964],
-    "device": {"simulator": "iPhone 16 Plus", "ios": 18, "text_size": "accessibility-medium", "theme": "light"}
+    "geo": [
+      41.9028,
+      12.4964
+    ],
+    "device": {
+      "simulator": "iPhone 16 Plus",
+      "ios": 18,
+      "text_size": "accessibility-medium",
+      "theme": "light"
+    },
+    "ref": "ref-iphone-17-pro-max"
   },
   {
     "id": "minjun",
@@ -176,8 +358,17 @@
     "profile": "Architect, 33, reads Korean, big iPad with small text, likes dense layouts.",
     "goal": "Use the app on the big screen and report wasted space or stretched layouts.",
     "locale": "ko-KR",
-    "geo": [37.5665, 126.978],
-    "device": {"simulator": "iPad Pro 13-inch (M4)", "ios": 18, "text_size": "small", "theme": "dark"}
+    "geo": [
+      37.5665,
+      126.978
+    ],
+    "device": {
+      "simulator": "iPad Pro 13-inch (M4)",
+      "ios": 18,
+      "text_size": "small",
+      "theme": "dark"
+    },
+    "ref": "ref-ipad-pro-13-m4"
   },
   {
     "id": "wei",
@@ -185,8 +376,17 @@
     "profile": "Accountant, 45, reads Simplified Chinese, careful, checks every number.",
     "goal": "Complete the main task and check translations, dates and number formats.",
     "locale": "zh-CN",
-    "geo": [31.2304, 121.4737],
-    "device": {"simulator": "iPhone 16e", "ios": 18, "text_size": "extra-large", "theme": "light"}
+    "geo": [
+      31.2304,
+      121.4737
+    ],
+    "device": {
+      "simulator": "iPhone 16e",
+      "ios": 18,
+      "text_size": "extra-large",
+      "theme": "light"
+    },
+    "ref": "ref-iphone-17-pro-max"
   },
   {
     "id": "aziz",
@@ -194,10 +394,701 @@
     "profile": "Cafe owner in Tashkent, 38, reads Uzbek (Latin), checks that every label is translated and fits.",
     "goal": "Go through the main sections of the business app and check the Uzbek texts.",
     "locale": "uz-UZ",
-    "geo": [41.2995, 69.2401],
-    "device": {"simulator": "iPhone 16", "ios": 18, "text_size": "large", "theme": "light"}
+    "geo": [
+      41.2995,
+      69.2401
+    ],
+    "device": {
+      "simulator": "iPhone 16",
+      "ios": 18,
+      "text_size": "large",
+      "theme": "light"
+    },
+    "ref": "ref-iphone-17-pro-max"
   },
-  {"id": "dmitri", "platform": "desktop", "profile": "Cashier in a cafe, 34, fast on the keyboard, works on an old 1366x768 monitor.", "goal": "Open the till, ring up and pay a sale, check orders and the shift, in Russian.", "locale": "ru-RU", "device": {"theme": "light", "resolution": "1366x768"}},
-  {"id": "zarina", "platform": "desktop", "profile": "Waiter in Tashkent, 26, reads Uzbek (Latin), takes table orders.", "goal": "Take a table order as a waiter and check every Uzbek text.", "locale": "uz-UZ", "device": {"theme": "dark", "resolution": "1920x1080"}},
-  {"id": "ethan", "platform": "desktop", "profile": "Shop manager, 45, English, checks settings and printers before opening.", "goal": "Check the shift, tables and receipt printer settings in English.", "locale": "en-US", "device": {"theme": "light", "resolution": "1920x1080"}}
+  {
+    "id": "ref-iphone-17-pro-max",
+    "platform": "ios",
+    "profile": "QA engineer on the reference device. Methodical, English, default text size, light theme.",
+    "goal": "Walk the whole flow of the brief on the reference device and screenshot every distinct screen: this run is the yardstick other screen sizes are compared with.",
+    "locale": "en-US",
+    "geo": [
+      37.7749,
+      -122.4194
+    ],
+    "device": {
+      "simulator": "iPhone 17 Pro Max",
+      "ios": 26,
+      "text_size": "large",
+      "theme": "light"
+    },
+    "reference": true,
+    "name": "iPhone 17 Pro Max"
+  },
+  {
+    "id": "ref-ipad-pro-13-m4",
+    "platform": "ios",
+    "profile": "QA engineer on the reference device. Methodical, English, default text size, light theme.",
+    "goal": "Walk the whole flow of the brief on the reference device and screenshot every distinct screen: this run is the yardstick other screen sizes are compared with.",
+    "locale": "en-US",
+    "geo": [
+      37.7749,
+      -122.4194
+    ],
+    "device": {
+      "simulator": "iPad Pro 13-inch (M4)",
+      "ios": 26,
+      "text_size": "large",
+      "theme": "light"
+    },
+    "reference": true,
+    "name": "iPad Pro 13 M4"
+  },
+  {
+    "id": "ref-pixel-9-pro-xl",
+    "platform": "android",
+    "profile": "QA engineer on the reference device. Methodical, English, default text size, light theme.",
+    "goal": "Walk the whole flow of the brief on the reference device and screenshot every distinct screen: this run is the yardstick other screen sizes are compared with.",
+    "locale": "en-US",
+    "geo": [
+      37.7749,
+      -122.4194
+    ],
+    "device": {
+      "name": "Pixel 9 Pro XL, Android 15",
+      "profile": "pixel_9_pro_xl",
+      "android_api": 35,
+      "font_scale": 1.0,
+      "theme": "light"
+    },
+    "reference": true,
+    "name": "Pixel 9 Pro XL"
+  },
+  {
+    "id": "ref-pixel-tablet",
+    "platform": "android",
+    "profile": "QA engineer on the reference device. Methodical, English, default text size, light theme.",
+    "goal": "Walk the whole flow of the brief on the reference device and screenshot every distinct screen: this run is the yardstick other screen sizes are compared with.",
+    "locale": "en-US",
+    "geo": [
+      37.7749,
+      -122.4194
+    ],
+    "device": {
+      "name": "Pixel Tablet, Android 14",
+      "profile": "pixel_tablet",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "light"
+    },
+    "reference": true,
+    "name": "Pixel Tablet"
+  },
+  {
+    "id": "ivan",
+    "platform": "ios",
+    "profile": "Courier dispatcher, 52, reads Russian, small iPhone, accessibility text size.",
+    "goal": "Do the main task on the smallest screen and report cut text, hidden buttons and anything that differs from the reference screenshots.",
+    "locale": "ru-RU",
+    "geo": [
+      55.7558,
+      37.6173
+    ],
+    "device": {
+      "simulator": "iPhone SE (3rd generation)",
+      "ios": 26,
+      "text_size": "accessibility-large",
+      "theme": "light"
+    },
+    "ref": "ref-iphone-17-pro-max"
+  },
+  {
+    "id": "bakhtiyor",
+    "platform": "ios",
+    "profile": "Shop owner in Samarkand, 40, reads Uzbek (Latin), compact iPhone.",
+    "goal": "Go through the main sections and check that the layout and the Uzbek texts fit a mini-sized screen.",
+    "locale": "uz-UZ",
+    "geo": [
+      39.627,
+      66.975
+    ],
+    "device": {
+      "simulator": "iPhone 13 mini",
+      "ios": 26,
+      "text_size": "large",
+      "theme": "dark"
+    },
+    "ref": "ref-iphone-17-pro-max"
+  },
+  {
+    "id": "lily",
+    "platform": "ios",
+    "profile": "Nurse, 29, English, a regular iPhone, uses the app one-handed.",
+    "goal": "Do the main task and check that the layout matches the reference iPhone.",
+    "locale": "en-GB",
+    "geo": [
+      51.5072,
+      -0.1276
+    ],
+    "device": {
+      "simulator": "iPhone 17",
+      "ios": 26,
+      "text_size": "large",
+      "theme": "light"
+    },
+    "ref": "ref-iphone-17-pro-max"
+  },
+  {
+    "id": "dana",
+    "platform": "ios",
+    "profile": "Cafe manager, 35, reads Russian, iPad mini on the counter.",
+    "goal": "Use the app on the small tablet: the layout must be the tablet one, not a stretched phone.",
+    "locale": "ru-RU",
+    "geo": [
+      55.7558,
+      37.6173
+    ],
+    "device": {
+      "simulator": "iPad mini (A17 Pro)",
+      "ios": 26,
+      "text_size": "large",
+      "theme": "light"
+    },
+    "ref": "ref-ipad-pro-13-m4"
+  },
+  {
+    "id": "jasur",
+    "platform": "ios",
+    "profile": "Restaurant owner, 46, reads Uzbek (Latin), iPad Air.",
+    "goal": "Use the app on a mid-size tablet and compare each screen with the reference iPad.",
+    "locale": "uz-UZ",
+    "geo": [
+      41.2995,
+      69.2401
+    ],
+    "device": {
+      "simulator": "iPad Air 11-inch (M3)",
+      "ios": 26,
+      "text_size": "large",
+      "theme": "dark"
+    },
+    "ref": "ref-ipad-pro-13-m4"
+  },
+  {
+    "id": "ipad-mini-landscape",
+    "platform": "ios",
+    "profile": "Kiosk installer, 33, English, iPad mini held in landscape.",
+    "goal": "Rotate to landscape where the app allows it and check each screen.",
+    "locale": "en-US",
+    "geo": [
+      41.2995,
+      69.2401
+    ],
+    "device": {
+      "simulator": "iPad mini (A17 Pro)",
+      "ios": 26,
+      "text_size": "large",
+      "theme": "light",
+      "orientation": "landscape"
+    },
+    "ref": "ref-ipad-pro-13-m4"
+  },
+  {
+    "id": "ipad-air-landscape",
+    "platform": "ios",
+    "profile": "Kitchen display installer, 38, reads Russian, iPad Air 11 in landscape.",
+    "goal": "Rotate to landscape where the app allows it and check each screen.",
+    "locale": "ru-RU",
+    "geo": [
+      55.7558,
+      37.6173
+    ],
+    "device": {
+      "simulator": "iPad Air 11-inch (M3)",
+      "ios": 26,
+      "text_size": "large",
+      "theme": "dark",
+      "orientation": "landscape"
+    },
+    "ref": "ref-ipad-pro-13-m4"
+  },
+  {
+    "id": "ipad-pro-landscape",
+    "platform": "ios",
+    "profile": "Franchise manager, 44, English, iPad Pro 13 in landscape.",
+    "goal": "Rotate to landscape where the app allows it and check each screen against the portrait reference structure.",
+    "locale": "en-US",
+    "geo": [
+      41.2995,
+      69.2401
+    ],
+    "device": {
+      "simulator": "iPad Pro 13-inch (M4)",
+      "ios": 26,
+      "text_size": "large",
+      "theme": "light",
+      "orientation": "landscape"
+    },
+    "ref": "ref-ipad-pro-13-m4"
+  },
+  {
+    "id": "tolik",
+    "platform": "android",
+    "profile": "Delivery rider, 31, reads Russian, a small cheap phone, larger font.",
+    "goal": "Do the main task on the smallest screen and report anything that differs from the reference.",
+    "locale": "ru-RU",
+    "geo": [
+      55.7558,
+      37.6173
+    ],
+    "device": {
+      "name": "Small phone, Android 14, 130% font",
+      "profile": "small_phone",
+      "android_api": 34,
+      "font_scale": 1.3,
+      "theme": "light"
+    },
+    "ref": "ref-pixel-9-pro-xl"
+  },
+  {
+    "id": "kamila",
+    "platform": "android",
+    "profile": "Seamstress, 49, reads Uzbek (Latin), Pixel 7, 150% font.",
+    "goal": "Check every Uzbek label fits with a large font.",
+    "locale": "uz-UZ",
+    "geo": [
+      41.2995,
+      69.2401
+    ],
+    "device": {
+      "name": "Pixel 7, Android 14, 150% font",
+      "profile": "pixel_7",
+      "android_api": 34,
+      "font_scale": 1.5,
+      "theme": "dark"
+    },
+    "ref": "ref-pixel-9-pro-xl"
+  },
+  {
+    "id": "timur",
+    "platform": "android",
+    "profile": "Wholesale buyer, 42, reads Russian, a foldable opened flat.",
+    "goal": "Use the unfolded inner screen: the layout must be the tablet one and use the width.",
+    "locale": "ru-RU",
+    "geo": [
+      55.7558,
+      37.6173
+    ],
+    "device": {
+      "name": "Pixel 9 Pro Fold unfolded, Android 15",
+      "profile": "pixel_9_pro_fold",
+      "android_api": 35,
+      "font_scale": 1.0,
+      "theme": "light",
+      "fold": "unfolded"
+    },
+    "ref": "ref-pixel-tablet"
+  },
+  {
+    "id": "sofia",
+    "platform": "android",
+    "profile": "Accountant, 36, English, a foldable closed, uses the outer screen.",
+    "goal": "Use the narrow outer screen and compare with the reference phone.",
+    "locale": "en-US",
+    "geo": [
+      40.4168,
+      -3.7038
+    ],
+    "device": {
+      "name": "Pixel 9 Pro Fold folded, Android 15",
+      "profile": "pixel_9_pro_fold",
+      "android_api": 35,
+      "font_scale": 1.0,
+      "theme": "light",
+      "fold": "folded"
+    },
+    "ref": "ref-pixel-9-pro-xl"
+  },
+  {
+    "id": "karim",
+    "platform": "android",
+    "profile": "Grocer, 51, reads Uzbek (Latin), a small 7-inch tablet in portrait.",
+    "goal": "Check the small tablet: no stretched phone layout, nothing clipped.",
+    "locale": "uz-UZ",
+    "geo": [
+      41.2995,
+      69.2401
+    ],
+    "device": {
+      "name": "Nexus 7 (7in), Android 14",
+      "profile": "Nexus 7",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "light"
+    },
+    "ref": "ref-pixel-tablet"
+  },
+  {
+    "id": "lena",
+    "platform": "android",
+    "profile": "Teacher, 45, English, 10-inch tablet, larger font.",
+    "goal": "Check the 10-inch tablet against the reference tablet.",
+    "locale": "en-US",
+    "geo": [
+      40.7128,
+      -74.006
+    ],
+    "device": {
+      "name": "10.1in WXGA tablet, Android 14, 130% font",
+      "profile": "10.1in WXGA (Tablet)",
+      "android_api": 34,
+      "font_scale": 1.3,
+      "theme": "light"
+    },
+    "ref": "ref-pixel-tablet"
+  },
+  {
+    "id": "kiosk-portrait-1080x1920",
+    "platform": "android",
+    "profile": "Self-order kiosk installer, 37, English, big portrait kiosk screen 1080x1920 at 240 dpi.",
+    "goal": "Check the kiosk or display app on the portrait kiosk screen: nothing clipped, touch targets large.",
+    "locale": "en-US",
+    "geo": [
+      41.2995,
+      69.2401
+    ],
+    "device": {
+      "name": "Kiosk 1080x1920 @240dpi, Android 14",
+      "profile": "pixel_7",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "light",
+      "wm_size": "1080x1920",
+      "wm_density": 240
+    },
+    "ref": "ref-pixel-9-pro-xl"
+  },
+  {
+    "id": "kiosk-landscape-1080p",
+    "platform": "android",
+    "profile": "Kiosk installer, 37, reads Russian, landscape kiosk 1920x1080.",
+    "goal": "Check the app on a landscape kiosk screen.",
+    "locale": "ru-RU",
+    "geo": [
+      55.7558,
+      37.6173
+    ],
+    "device": {
+      "name": "Landscape 1920x1080 @240dpi, Android 14",
+      "profile": "pixel_tablet",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "light",
+      "wm_size": "1920x1080",
+      "wm_density": 240,
+      "orientation": "landscape"
+    },
+    "ref": "ref-pixel-tablet"
+  },
+  {
+    "id": "tv-1080p",
+    "platform": "android",
+    "profile": "Kitchen display installer, 40, English, a 1080p screen on the wall (tv_1080p size).",
+    "goal": "Check the display role on 1920x1080 at TV density.",
+    "locale": "en-US",
+    "geo": [
+      40.7128,
+      -74.006
+    ],
+    "device": {
+      "name": "TV 1080p, Android 14",
+      "profile": "pixel_tablet",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "dark",
+      "wm_size": "1920x1080",
+      "wm_density": 320,
+      "orientation": "landscape"
+    },
+    "ref": "ref-pixel-tablet"
+  },
+  {
+    "id": "tv-4k",
+    "platform": "android",
+    "profile": "Queue board installer, 40, reads Uzbek (Latin), a 4K screen (tv_4k size).",
+    "goal": "Check the display role on 3840x2160: text must stay readable from a distance, nothing tiny.",
+    "locale": "uz-UZ",
+    "geo": [
+      41.2995,
+      69.2401
+    ],
+    "device": {
+      "name": "TV 4K, Android 14",
+      "profile": "pixel_tablet",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "dark",
+      "wm_size": "3840x2160",
+      "wm_density": 640,
+      "orientation": "landscape"
+    },
+    "ref": "ref-pixel-tablet"
+  },
+  {
+    "id": "tv-720p",
+    "platform": "android",
+    "profile": "Small cafe owner, 48, reads Russian, an old 720p screen (tv_720p size).",
+    "goal": "Check the display role on 1280x720.",
+    "locale": "ru-RU",
+    "geo": [
+      55.7558,
+      37.6173
+    ],
+    "device": {
+      "name": "TV 720p, Android 14",
+      "profile": "pixel_tablet",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "dark",
+      "wm_size": "1280x720",
+      "wm_density": 160,
+      "orientation": "landscape"
+    },
+    "ref": "ref-pixel-tablet"
+  },
+  {
+    "id": "tablet-101-landscape",
+    "platform": "android",
+    "profile": "Waiter, 28, English, 10.1in tablet in landscape.",
+    "goal": "Check each screen in landscape.",
+    "locale": "en-US",
+    "geo": [
+      40.7128,
+      -74.006
+    ],
+    "device": {
+      "name": "10.1in WXGA tablet landscape, Android 14",
+      "profile": "10.1in WXGA (Tablet)",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "light",
+      "orientation": "landscape"
+    },
+    "ref": "ref-pixel-tablet"
+  },
+  {
+    "id": "tablet-7in-landscape",
+    "platform": "android",
+    "profile": "Barista, 24, reads Russian, a 7in tablet in landscape.",
+    "goal": "Check each screen in landscape on the small tablet.",
+    "locale": "ru-RU",
+    "geo": [
+      55.7558,
+      37.6173
+    ],
+    "device": {
+      "name": "Nexus 7 (7in) landscape, Android 14",
+      "profile": "Nexus 7",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "light",
+      "orientation": "landscape"
+    },
+    "ref": "ref-pixel-tablet"
+  },
+  {
+    "id": "pos-dual-display",
+    "platform": "android",
+    "profile": "Cashier, 30, English, POS tablet with a customer-facing second display.",
+    "goal": "Use the POS on the main display, then look at the second display (customer screen): it shows cart and total, non-interactive. See briefs/intop-pos-dual.md.",
+    "locale": "en-US",
+    "geo": [
+      40.7128,
+      -74.006
+    ],
+    "device": {
+      "name": "Pixel Tablet + 1920x1080 second display, Android 14",
+      "profile": "pixel_tablet",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "light",
+      "orientation": "landscape",
+      "second_display": "1920x1080/240"
+    },
+    "ref": "ref-pixel-tablet"
+  },
+  {
+    "id": "dmitri",
+    "platform": "desktop",
+    "profile": "Cashier in a cafe, 34, fast on the keyboard, works on an old 1366x768 monitor.",
+    "goal": "Open the till, ring up and pay a sale, check orders and the shift, in Russian.",
+    "locale": "ru-RU",
+    "device": {
+      "theme": "light",
+      "resolution": "1366x768"
+    }
+  },
+  {
+    "id": "zarina",
+    "platform": "desktop",
+    "profile": "Waiter in Tashkent, 26, reads Uzbek (Latin), takes table orders.",
+    "goal": "Take a table order as a waiter and check every Uzbek text.",
+    "locale": "uz-UZ",
+    "device": {
+      "theme": "dark",
+      "resolution": "1920x1080"
+    }
+  },
+  {
+    "id": "ethan",
+    "platform": "desktop",
+    "profile": "Shop manager, 45, English, checks settings and printers before opening.",
+    "goal": "Check the shift, tables and receipt printer settings in English.",
+    "locale": "en-US",
+    "device": {
+      "theme": "light",
+      "resolution": "1920x1080"
+    }
+  },
+  {
+    "id": "screen-1280x800",
+    "platform": "desktop",
+    "profile": "Cashier, 32, 1280x800 laptop.",
+    "goal": "Ring up a sale and check that nothing is clipped at this size.",
+    "locale": "en-US",
+    "device": {
+      "theme": "light",
+      "resolution": "1280x800"
+    }
+  },
+  {
+    "id": "screen-1366x768",
+    "platform": "desktop",
+    "profile": "Cashier, 40, old 1366x768 monitor.",
+    "goal": "Ring up a sale and check that nothing is clipped at this size.",
+    "locale": "ru-RU",
+    "device": {
+      "theme": "light",
+      "resolution": "1366x768"
+    }
+  },
+  {
+    "id": "screen-1920x1080",
+    "platform": "desktop",
+    "profile": "Manager, 38, full HD monitor.",
+    "goal": "Ring up a sale and check that the layout uses the space.",
+    "locale": "uz-UZ",
+    "device": {
+      "theme": "dark",
+      "resolution": "1920x1080"
+    }
+  },
+  {
+    "id": "screen-2560x1440",
+    "platform": "desktop",
+    "profile": "Owner, 45, 2560x1440 monitor.",
+    "goal": "Ring up a sale and check for tiny or stretched layout.",
+    "locale": "en-US",
+    "device": {
+      "theme": "light",
+      "resolution": "2560x1440"
+    }
+  },
+  {
+    "id": "kiosk-1080x1920",
+    "platform": "desktop",
+    "profile": "Kiosk installer, 37, vertical kiosk 1080x1920.",
+    "goal": "Run the kiosk role and order as a guest.",
+    "locale": "ru-RU",
+    "device": {
+      "theme": "light",
+      "resolution": "1080x1920",
+      "role": "kiosk"
+    }
+  },
+  {
+    "id": "kiosk-1920x1080",
+    "platform": "desktop",
+    "profile": "Kiosk installer, 37, landscape kiosk.",
+    "goal": "Run the kiosk role and order as a guest.",
+    "locale": "en-US",
+    "device": {
+      "theme": "light",
+      "resolution": "1920x1080",
+      "role": "kiosk"
+    }
+  },
+  {
+    "id": "kiosk-1024x600",
+    "platform": "desktop",
+    "profile": "Kiosk installer, 37, small 7in kiosk 1024x600.",
+    "goal": "Run the kiosk role and order as a guest.",
+    "locale": "uz-UZ",
+    "device": {
+      "theme": "light",
+      "resolution": "1024x600",
+      "role": "kiosk"
+    }
+  },
+  {
+    "id": "board-1920x1080",
+    "platform": "desktop",
+    "profile": "Kitchen staff, 29, queue board 1080p.",
+    "goal": "Run the pickup board role and check readability.",
+    "locale": "uz-UZ",
+    "device": {
+      "theme": "dark",
+      "resolution": "1920x1080",
+      "role": "board"
+    }
+  },
+  {
+    "id": "board-3840x2160",
+    "platform": "desktop",
+    "profile": "Cafe owner, 41, 4K queue board.",
+    "goal": "Run the pickup board role and check text is not tiny at 4K.",
+    "locale": "en-US",
+    "device": {
+      "theme": "dark",
+      "resolution": "3840x2160",
+      "role": "board"
+    }
+  },
+  {
+    "id": "ads-1920x1080",
+    "platform": "desktop",
+    "profile": "Marketing, 33, advertising screen.",
+    "goal": "Run the ads role and check the layout.",
+    "locale": "ru-RU",
+    "device": {
+      "theme": "light",
+      "resolution": "1920x1080",
+      "role": "ads"
+    }
+  },
+  {
+    "id": "customer-1280x800",
+    "platform": "desktop",
+    "profile": "Cashier, 30, customer-facing screen.",
+    "goal": "Run the customer role and check cart and total.",
+    "locale": "en-US",
+    "device": {
+      "theme": "light",
+      "resolution": "1280x800",
+      "role": "customer"
+    }
+  },
+  {
+    "id": "pos-dual",
+    "platform": "desktop",
+    "profile": "Cashier, 30, POS on one monitor and the customer screen on a second one.",
+    "goal": "Follow briefs/intop-pos-desktop-dual.md.",
+    "locale": "en-US",
+    "device": {
+      "theme": "light",
+      "resolution": "1920x1080",
+      "role": "pos",
+      "second_screen": "1280x800"
+    }
+  }
 ]

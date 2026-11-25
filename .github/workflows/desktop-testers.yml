@@ -12,6 +12,12 @@ on:
       oses:
         description: Which OS to run (comma-separated)
         default: "linux,windows,macos"
+      resolutions:
+        description: "Screen sizes (comma-separated WxH, e.g. 1280x800,1366x768,1920x1080,2560x1440). Every persona runs at each. Empty = the persona's own size. Linux: any size. Windows: up to 1920x1080 (larger is refused, the closest smaller size is used). macOS: fixed list up to 1920x1080 (1366x768 becomes 1344x756, 2560x1440 becomes 1920x1080); the actual size is written to resolution.txt"
+        default: ""
+      extra_args:
+        description: "Extra app arguments, e.g. a role: --role kiosk (personas with a role add their own --role). Window size flags of the new roles: --window 1080x1920"
+        default: ""
       lang:
         description: "Force one app language for every persona: ru, uz or en (empty = each persona's own)"
         default: ""
@@ -23,7 +29,7 @@ on:
         type: boolean
         default: true
       model:
-        description: "Model: sonnet, opus, haiku (cheapest) or a full Claude id"
+        description: "Model: sonnet (default), haiku (cheapest), opus or a full Claude id"
         default: sonnet
       llm_base_url:
         description: "Optional Anthropic-compatible API instead of Claude (key in the LLM_API_KEY secret)"
@@ -49,6 +55,7 @@ jobs:
           PERSONAS: ${{ inputs.personas }}
           OSES: ${{ inputs.oses }}
           LANG_OVERRIDE: ${{ inputs.lang }}
+          RESOLUTIONS: ${{ inputs.resolutions }}
         run: PLATFORM=desktop python3 scripts/matrix.py >> "$GITHUB_OUTPUT"
 
   desktop:
@@ -83,8 +90,21 @@ jobs:
       - name: Linux desktop packages
         if: matrix.os == 'linux'
         run: sudo apt-get update -qq && sudo apt-get install -y -qq xvfb openbox xdotool python3-tk python3-xlib >/dev/null
+      - name: Screen size (Windows)
+        if: matrix.os == 'windows'
+        shell: pwsh
+        run: |
+          $w,$h = '${{ matrix.resolution }}' -split 'x'
+          ./scripts/desktop/set_resolution.ps1 -Width $w -Height $h
+      - name: Screen size (macOS)
+        if: matrix.os == 'macos'
+        run: bash scripts/desktop/set_resolution_macos.sh "${{ matrix.resolution }}"
       - name: Agent
         env:
+          LABEL: ${{ matrix.label }}
+          ROLE: ${{ matrix.role }}
+          SECOND_SCREEN: ${{ matrix.second_screen }}
+          EXTRA_ARGS: ${{ inputs.extra_args }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OS_NAME: ${{ matrix.os }}
@@ -103,13 +123,14 @@ jobs:
           RES: ${{ matrix.resolution }}
         run: |
           if [ "$OS_NAME" = linux ]; then
-            xvfb-run -a -s "-screen 0 ${RES}x24" bash -c 'openbox >/dev/null 2>&1 & sleep 2; bash scripts/desktop/run_agent.sh'
+            SCREENS="-screen 0 ${RES}x24"; [ -n "$SECOND_SCREEN" ] && SCREENS="$SCREENS -screen 1 ${SECOND_SCREEN}x24 +xinerama"
+            xvfb-run -a -s "$SCREENS" bash -c 'openbox >/dev/null 2>&1 & sleep 2; bash scripts/desktop/run_agent.sh'
           else
             bash scripts/desktop/run_agent.sh
           fi
       - name: Encrypt results
         if: always()
-        run: bash scripts/encrypt_results.sh "desktop-${{ matrix.os }}-${{ matrix.persona }}"
+        run: bash scripts/encrypt_results.sh "desktop-${{ matrix.os }}-${{ matrix.label }}"
       - uses: actions/upload-artifact@v4
         if: always()
-        with: { name: "results-desktop-${{ matrix.os }}-${{ matrix.persona }}", path: results.enc/, retention-days: 14 }
+        with: { name: "results-desktop-${{ matrix.os }}-${{ matrix.label }}", path: results.enc/, retention-days: 14 }

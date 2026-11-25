@@ -10,7 +10,7 @@ from PIL import Image
 out, nn = Path(sys.argv[1]), sys.argv[2]
 out.mkdir(parents=True, exist_ok=True)
 with mss.mss() as s:
-    shot = s.grab(s.monitors[1])
+    shot = s.grab(s.monitors[0 if os.environ.get('SECOND_SCREEN') else 1])   # monitors[0] = all screens side by side
 img = Image.frombytes("RGB", shot.size, shot.bgra, "raw", "BGRX")
 cw, ch = pyautogui.size()           # click space (points on macOS, pixels elsewhere)
 k = cw / min(img.width, 1024)
