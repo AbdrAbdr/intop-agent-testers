@@ -1,0 +1,115 @@
+# AI testers for the INTOP POS desktop app (Compose Desktop jar) on Linux, Windows and macOS.
+# The jar is an encrypted release asset (see scripts/fetch_build.sh); results are encrypted
+# with results_public.pem like the mobile jobs. Decrypt with: bash scripts/collect.sh <run id>
+name: Desktop testers
+
+on:
+  workflow_dispatch:
+    inputs:
+      personas:
+        description: Desktop personas from personas.json (comma-separated; dmitri = ru 1366x768, zarina = uz dark, ethan = en)
+        default: "dmitri"
+      oses:
+        description: Which OS to run (comma-separated)
+        default: "linux,windows,macos"
+      lang:
+        description: "Force one app language for every persona: ru, uz or en (empty = each persona's own)"
+        default: ""
+      brief:
+        description: Agent brief file
+        default: briefs/intop-pos-desktop.md
+      demo:
+        description: Start the app with --demo (no server, no credentials)
+        type: boolean
+        default: true
+      model:
+        description: "Model: sonnet, opus, haiku (cheapest) or a full Claude id"
+        default: sonnet
+      llm_base_url:
+        description: "Optional Anthropic-compatible API instead of Claude (key in the LLM_API_KEY secret)"
+        default: ""
+      build_tag:
+        description: Release tag that holds the encrypted jars
+        default: builds-20261125
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      desktop: ${{ steps.m.outputs.desktop }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check setup
+        run: test -s results_public.pem || { echo "::error::results_public.pem is missing"; exit 1; }
+      - id: m
+        env:
+          PERSONAS: ${{ inputs.personas }}
+          OSES: ${{ inputs.oses }}
+          LANG_OVERRIDE: ${{ inputs.lang }}
+        run: PLATFORM=desktop python3 scripts/matrix.py >> "$GITHUB_OUTPUT"
+
+  desktop:
+    needs: plan
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.desktop) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "21" }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Fetch and decrypt the build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_DECRYPT_KEY: ${{ secrets.BUILD_DECRYPT_KEY }}
+        run: bash scripts/fetch_build.sh "intop-pos-desktop-${{ matrix.os }}.jar" "${{ inputs.build_tag }}"
+      - name: Tools (pyautogui, mss, Claude Code)
+        run: |
+          python -m pip install -q pyautogui mss pillow psutil
+          npm install -g --silent @anthropic-ai/claude-code
+      - name: Linux desktop packages
+        if: matrix.os == 'linux'
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq xvfb openbox xdotool python3-tk python3-xlib >/dev/null
+      - name: Agent
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OS_NAME: ${{ matrix.os }}
+          PERSONA_ID: ${{ matrix.persona }}
+          LANG_CODE: ${{ matrix.lang }}
+          THEME: ${{ matrix.theme }}
+          DEMO: ${{ inputs.demo }}
+          BRIEF: ${{ inputs.brief }}
+          MODEL: ${{ inputs.model }}
+          LLM_BASE_URL: ${{ inputs.llm_base_url }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          JAR: intop-pos-desktop-${{ matrix.os }}.jar
+          QA_FOOD_OWNER_EMAIL: ${{ secrets.QA_FOOD_OWNER_EMAIL }}
+          QA_FOOD_OWNER_PASSWORD: ${{ secrets.QA_FOOD_OWNER_PASSWORD }}
+          CLAUDE_CODE_GIT_BASH_PATH: C:\Program Files\Git\bin\bash.exe
+          RES: ${{ matrix.resolution }}
+        run: |
+          if [ "$OS_NAME" = linux ]; then
+            xvfb-run -a -s "-screen 0 ${RES}x24" bash -c 'openbox >/dev/null 2>&1 & sleep 2; bash scripts/desktop/run_agent.sh'
+          else
+            bash scripts/desktop/run_agent.sh
+          fi
+      - name: Encrypt results
+        if: always()
+        run: bash scripts/encrypt_results.sh "desktop-${{ matrix.os }}-${{ matrix.persona }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: "results-desktop-${{ matrix.os }}-${{ matrix.persona }}", path: results.enc/, retention-days: 14 }

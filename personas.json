@@ -187,5 +187,8 @@
     "locale": "uz-UZ",
     "geo": [41.2995, 69.2401],
     "device": {"simulator": "iPhone 16", "ios": 18, "text_size": "large", "theme": "light"}
-  }
+  },
+  {"id": "dmitri", "platform": "desktop", "profile": "Cashier in a cafe, 34, fast on the keyboard, works on an old 1366x768 monitor.", "goal": "Open the till, ring up and pay a sale, check orders and the shift, in Russian.", "locale": "ru-RU", "device": {"theme": "light", "resolution": "1366x768"}},
+  {"id": "zarina", "platform": "desktop", "profile": "Waiter in Tashkent, 26, reads Uzbek (Latin), takes table orders.", "goal": "Take a table order as a waiter and check every Uzbek text.", "locale": "uz-UZ", "device": {"theme": "dark", "resolution": "1920x1080"}},
+  {"id": "ethan", "platform": "desktop", "profile": "Shop manager, 45, English, checks settings and printers before opening.", "goal": "Check the shift, tables and receipt printer settings in English.", "locale": "en-US", "device": {"theme": "light", "resolution": "1920x1080"}}
 ]

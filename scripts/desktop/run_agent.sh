@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Runs on the desktop runner (Linux under xvfb-run, Windows in Git Bash, macOS):
+# launches the POS jar windowed, then hands the screen to Claude Code.
+# Output goes to results/ (encrypted later), never to the public log.
+# Env: OS_NAME PERSONA_ID LANG_CODE THEME DEMO BRIEF MODEL JAR (+ LLM_*, QA_*)
+set -uo pipefail
+PERSONA="${OS_NAME}-${PERSONA_ID}"; export PERSONA
+mkdir -p "results/$PERSONA"
+export APP_PID_FILE="$PWD/results/app.pid" APP_LOG="$PWD/results/$PERSONA/app.log"
+ARGS=(--window --lang "$LANG_CODE" --theme "$THEME"); [ "${DEMO:-true}" = true ] && ARGS+=(--demo)
+java -jar "$JAR" "${ARGS[@]}" > "$APP_LOG" 2>&1 &
+echo $! > "$APP_PID_FILE"
+sleep 20
+python scripts/desktop/screen.py "results/$PERSONA" 00 > "results/$PERSONA/launch-check.txt" 2>&1 || true
+head -4 "results/$PERSONA/launch-check.txt" | grep -v '^mouse' | sed 's/^/launch: /'
+source scripts/llm_env.sh || exit 1
+claude -p "Read $BRIEF and personas.json, then do the mission until the final report. PERSONA=$PERSONA (results folder; persona id $PERSONA_ID) PLATFORM=desktop OS=$OS_NAME. App language $LANG_CODE, theme $THEME, demo mode ${DEMO:-true}. A first screenshot is already saved as results/$PERSONA/00.png: start your numbering at 01. Budget: about 40 actions." \
+  --model "${MODEL:-sonnet}" --max-turns 110 --output-format json \
+  --allowedTools "Bash(python scripts/desktop/screen.py:*),Bash(python scripts/desktop/click.py:*),Bash(python scripts/desktop/key.py:*),Bash(python scripts/desktop/scroll.py:*),Bash(python scripts/desktop/type.py:*),Bash(python scripts/desktop/type_secret.py:*),Bash(sleep:*),Bash(ls:*),Bash(cat:*),Bash(mkdir:*),Read,Write,Edit" \
+  > results/agent-output.json 2> results/agent-errors.txt
+CODE=$?
+python scripts/agent_status.py results/agent-output.json results/agent-errors.txt "$PERSONA" || true
+kill "$(cat "$APP_PID_FILE")" 2>/dev/null
+echo "Agent finished (exit $CODE), $(ls "results/$PERSONA" | wc -l) files"

@@ -17,6 +17,15 @@ other = [p for p in wanted if personas[p].get("platform", platform) != platform]
 if other:  # its device settings would be silently replaced by defaults
     raise SystemExit(f"Not {platform} personas: {other}. Put them in the other platform's list.")
 rows = []
+if platform == "desktop":   # persona x OS; OSES = linux,windows,macos
+    runners = {"linux": "ubuntu-latest", "windows": "windows-latest", "macos": "macos-15"}
+    for os_name in [o.strip() for o in os.environ.get("OSES", "linux,windows,macos").split(",") if o.strip()]:
+        for pid in wanted:
+            d = personas[pid].get("device", {})
+            rows.append({"persona": pid, "os": os_name, "runner": runners[os_name], "theme": d.get("theme", "light"),
+                         "lang": os.environ.get("LANG_OVERRIDE") or personas[pid].get("locale", "en-US")[:2],
+                         "resolution": d.get("resolution", "1920x1080")})
+    wanted = []
 for pid in wanted:
     p = personas[pid]
     d = p.get("device", {})
