@@ -14,8 +14,8 @@ sleep 20
 python scripts/desktop/screen.py "results/$PERSONA" 00 > "results/$PERSONA/launch-check.txt" 2>&1 || true
 head -4 "results/$PERSONA/launch-check.txt" | grep -v '^mouse' | sed 's/^/launch: /'
 source scripts/llm_env.sh || exit 1
-claude -p "Read $BRIEF and personas.json, then do the mission until the final report. PERSONA=$PERSONA (results folder; persona id $PERSONA_ID) PLATFORM=desktop OS=$OS_NAME. App language $LANG_CODE, theme $THEME, demo mode ${DEMO:-true}. A first screenshot is already saved as results/$PERSONA/00.png: start your numbering at 01. Budget: about 40 actions." \
-  --model "${MODEL:-sonnet}" --max-turns 110 --output-format json \
+claude -p "Read $BRIEF and personas.json, then do the mission until the final report. PERSONA=$PERSONA (results folder; persona id $PERSONA_ID) PLATFORM=desktop OS=$OS_NAME. App language $LANG_CODE, theme $THEME, demo mode ${DEMO:-true}. A first screenshot is already saved as results/$PERSONA/00.png: start your numbering at 01. Budget: about 30 actions; write report.md and findings.json no later than action 30 (the run is cut off at a hard turn limit)." \
+  --model "${MODEL:-sonnet}" --max-turns 140 --output-format json \
   --allowedTools "Bash(python scripts/desktop/screen.py:*),Bash(python scripts/desktop/click.py:*),Bash(python scripts/desktop/key.py:*),Bash(python scripts/desktop/scroll.py:*),Bash(python scripts/desktop/type.py:*),Bash(python scripts/desktop/type_secret.py:*),Bash(sleep:*),Bash(ls:*),Bash(cat:*),Bash(mkdir:*),Read,Write,Edit" \
   > results/agent-output.json 2> results/agent-errors.txt
 CODE=$?

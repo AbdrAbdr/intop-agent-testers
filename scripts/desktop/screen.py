@@ -1,6 +1,6 @@
 """Screenshot of the desktop + short status. Works on Linux (Xvfb), Windows and macOS.
 Usage: python scripts/desktop/screen.py <dir> <NN>
-Saves <dir>/<NN>.png scaled to at most 1280 px wide and prints how to convert
+Saves <dir>/<NN>.png scaled to at most 1024 px wide and prints how to convert
 positions read on the image into click coordinates (what click.py expects)."""
 import os, sys
 from pathlib import Path
@@ -13,7 +13,7 @@ with mss.mss() as s:
     shot = s.grab(s.monitors[1])
 img = Image.frombytes("RGB", shot.size, shot.bgra, "raw", "BGRX")
 cw, ch = pyautogui.size()           # click space (points on macOS, pixels elsewhere)
-k = cw / min(img.width, 1280)
+k = cw / min(img.width, 1024)
 img.resize((round(cw / k), round(ch / k))).save(out / f"{nn}.png")
 print(f"screenshot: {out}/{nn}.png (click space {cw}x{ch}; image {round(cw / k)}x{round(ch / k)}: multiply positions read on it by {k:.3f})")
 print(f"mouse at {tuple(pyautogui.position())}")

@@ -8,7 +8,7 @@ window on a real desktop (OS and screen size are in your task line). Tools, noth
 - `python scripts/desktop/click.py X Y [double|right]` - `python scripts/desktop/scroll.py X Y down|up [n]`
 - `python scripts/desktop/key.py enter tab esc ctrl+a F11 ...` - `python scripts/desktop/type.py "text"` (click the field first)
 - `python scripts/desktop/type_secret.py QA_NAME` only if a QA_* login is named in the task (not in demo).
-Screenshot after EVERY action and look at it before the next. Budget: about 40 actions, then write the report.
+Screenshot after EVERY action and look at it before the next. Budget: about 30 actions. Write report.md and findings.json NO LATER than action 30: if you are cut off before they exist, the whole run is lost. Skip steps rather than skip the report.
 Write only under `results/<PERSONA>/`. `<PERSONA>` is in your task line (like `linux-dmitri`).
 
 ## Mode
