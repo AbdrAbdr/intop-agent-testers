@@ -1,0 +1,28 @@
+# No model, no app: reports which screen sizes the hosted desktop runners can be switched to.
+name: display-probe
+on: workflow_dispatch
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - shell: pwsh
+        run: |
+          Get-CimInstance Win32_VideoController | Format-List Name, VideoModeDescription, CurrentHorizontalResolution, CurrentVerticalResolution
+          ./scripts/desktop/set_resolution.ps1 -List
+          foreach ($r in '1366x768','1920x1080','2560x1440') { $w,$h = $r -split 'x'; "--- $r"; ./scripts/desktop/set_resolution.ps1 -Width $w -Height $h }
+  macos:
+    strategy: { fail-fast: false, matrix: { os: [macos-15, macos-26] } }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: |
+          sw_vers; system_profiler SPDisplaysDataType
+          brew install displayplacer >/dev/null 2>&1 || true
+          displayplacer list || true
+          ID=$(displayplacer list 2>/dev/null | awk '/Persistent screen id/{print $4; exit}')
+          echo "screen id: $ID"
+          for r in 1366x768 1920x1080 2560x1440 1280x800; do
+            echo "--- $r"; displayplacer "id:$ID res:$r scaling:off origin:(0,0) degree:0" 2>&1 | tail -3 || true
+            system_profiler SPDisplaysDataType | grep -i resolution
+          done
+          python3 -c "import subprocess; print(subprocess.run(['osascript','-e','tell application \"Finder\" to get bounds of window of desktop'],capture_output=True,text=True))"
