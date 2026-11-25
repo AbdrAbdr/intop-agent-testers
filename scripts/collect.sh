@@ -7,7 +7,7 @@ RUN=$1
 REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
 PRIV=${2:-$HOME/.mobile-agent-testers/${REPO//\//_}.pem}; OUT=${3:-runs/$1}
 mkdir -p "$OUT/enc"
-gh run download "$RUN" -D "$OUT/enc"
+gh run download "$RUN" -D "$OUT/enc" --pattern "results-*" --pattern "build-log-*"   # not the encrypted app builds (large)
 for key in "$OUT"/enc/*/*.key.bin; do
   name=$(basename "$key" .key.bin); dir=$(dirname "$key")
   pass=$(openssl pkeyutl -decrypt -inkey "$PRIV" -pkeyopt rsa_padding_mode:oaep -in "$key")
