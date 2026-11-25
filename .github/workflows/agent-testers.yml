@@ -121,6 +121,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}   # android_build may run `gh release download`
           BUILD_ARGS: ${{ inputs.build_args }}
           BUILD_ARGS_SECRET: ${{ secrets.BUILD_ARGS }}
+          BUILD_DECRYPT_KEY: ${{ secrets.BUILD_DECRYPT_KEY }}   # test builds are published encrypted
           ARTIFACT: ${{ inputs.apk_path }}
         run: bash scripts/build/android.sh "$APP_DIR" "${{ inputs.framework }}"
       - name: Encrypt APK
@@ -170,6 +171,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}   # ios_build may run `gh release download`
           BUILD_ARGS: ${{ inputs.build_args }}
           BUILD_ARGS_SECRET: ${{ secrets.BUILD_ARGS }}
+          BUILD_DECRYPT_KEY: ${{ secrets.BUILD_DECRYPT_KEY }}   # test builds are published encrypted
           ARTIFACT: ${{ inputs.ios_app_path }}
           IOS_SCHEME: ${{ vars.IOS_SCHEME }}   # optional repo variable, for projects with several schemes
         run: bash scripts/build/ios.sh "$APP_DIR" "${{ inputs.framework }}"

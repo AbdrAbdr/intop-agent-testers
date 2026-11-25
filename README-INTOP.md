@@ -14,7 +14,7 @@ secrets `ARTIFACT_PASSPHRASE`, `ANTHROPIC_API_KEY` (set by the owner) and
 
 | Asset | App id |
 |---|---|
-| `intop-business-android-debug.apk` | `org.bytebit.intopbussines.dev` (debug suffix `.dev`; talks to production `api.intop.uz`) |
+| `business-android-debug-aifix.apk` | `org.bytebit.intopbussines.dev` (debug suffix `.dev`; talks to production `api.intop.uz`) |
 | `intop-business-ios-sim.zip` (contains `IntopBusiness.app`) | `org.bytebit.intop-bussines` |
 
 To refresh builds, build from a clean worktree of `origin/main`, then
@@ -25,8 +25,8 @@ To refresh builds, build from a clean worktree of `origin/main`, then
 ```bash
 gh workflow run agent-testers.yml -R AbdrAbdr/intop-agent-testers \
   -f app_dir=. -f framework=native -f app_id=org.bytebit.intopbussines.dev \
-  -f android_build='gh release download builds-20261125 -R "$GITHUB_REPOSITORY" -p intop-business-android-debug.apk --clobber' \
-  -f apk_path=intop-business-android-debug.apk \
+  -f android_build='bash scripts/fetch_build.sh business-android-debug-aifix.apk' \
+  -f apk_path=business-android-debug-aifix.apk \
   -f android_personas=olga,grace -f ios_personas=none \
   -f brief=briefs/intop-business-food.md
 ```
@@ -40,7 +40,7 @@ Add `-f model=haiku` to spend less, `-f record_video=true` for screen recordings
 ```bash
 gh workflow run agent-testers.yml -R AbdrAbdr/intop-agent-testers \
   -f app_dir=. -f framework=native -f app_id=org.bytebit.intop-bussines \
-  -f ios_build='gh release download builds-20261125 -R "$GITHUB_REPOSITORY" -p intop-business-ios-sim.zip --clobber && ditto -x -k intop-business-ios-sim.zip ios-app' \
+  -f ios_build='bash scripts/fetch_build.sh intop-business-ios-sim.zip' \
   -f ios_app_path=ios-app/IntopBusiness.app \
   -f android_personas=none -f ios_personas=aziz,noah \
   -f brief=briefs/intop-business-food.md
@@ -77,3 +77,7 @@ Prerequisites on that Mac: Xcode, `gh`, Homebrew, Node, Python 3, and **password
 runner user: the iOS job runs `sudo xcode-select`, edits `/etc/hosts` and uses `pfctl` to block
 analytics hosts. These edits persist on a self-hosted Mac (remove the `block_hosts` lines from
 `/etc/hosts` afterwards). Jobs also create and boot their own simulators. Run `ios_personas` 1-2 at a time.
+
+
+## Public repo
+The repo is public so GitHub runners are free. Test builds are published only encrypted (`*.enc`, AES-256, key in the `BUILD_DECRYPT_KEY` secret) and decrypted inside the job by `scripts/fetch_build.sh`. Reports are encrypted with `results_public.pem`. Never commit INTOP source or credentials here.
