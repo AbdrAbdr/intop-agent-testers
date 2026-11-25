@@ -178,5 +178,14 @@
     "locale": "zh-CN",
     "geo": [31.2304, 121.4737],
     "device": {"simulator": "iPhone 16e", "ios": 18, "text_size": "extra-large", "theme": "light"}
+  },
+  {
+    "id": "aziz",
+    "platform": "ios",
+    "profile": "Cafe owner in Tashkent, 38, reads Uzbek (Latin), checks that every label is translated and fits.",
+    "goal": "Go through the main sections of the business app and check the Uzbek texts.",
+    "locale": "uz-UZ",
+    "geo": [41.2995, 69.2401],
+    "device": {"simulator": "iPhone 16", "ios": 18, "text_size": "large", "theme": "light"}
   }
 ]

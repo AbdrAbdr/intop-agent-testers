@@ -118,6 +118,7 @@ jobs:
         env:
           APP_DIR: ${{ inputs.source_repo != '' && format('src/{0}', inputs.app_dir) || inputs.app_dir }}
           BUILD_COMMAND: ${{ inputs.android_build }}
+          GH_TOKEN: ${{ github.token }}   # android_build may run `gh release download`
           BUILD_ARGS: ${{ inputs.build_args }}
           BUILD_ARGS_SECRET: ${{ secrets.BUILD_ARGS }}
           ARTIFACT: ${{ inputs.apk_path }}
@@ -137,7 +138,7 @@ jobs:
   build-ios:
     needs: plan
     if: needs.plan.outputs.ios != '[]'
-    runs-on: macos-15
+    runs-on: ${{ vars.IOS_RUNNER || 'macos-15' }}
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
@@ -166,6 +167,7 @@ jobs:
         env:
           APP_DIR: ${{ inputs.source_repo != '' && format('src/{0}', inputs.app_dir) || inputs.app_dir }}
           BUILD_COMMAND: ${{ inputs.ios_build }}
+          GH_TOKEN: ${{ github.token }}   # ios_build may run `gh release download`
           BUILD_ARGS: ${{ inputs.build_args }}
           BUILD_ARGS_SECRET: ${{ secrets.BUILD_ARGS }}
           ARTIFACT: ${{ inputs.ios_app_path }}
@@ -249,6 +251,10 @@ jobs:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           BLOCK_HOSTS: ${{ inputs.block_hosts }}
           RECORD_VIDEO: ${{ inputs.record_video }}
+          QA_FOOD_OWNER_EMAIL: ${{ secrets.QA_FOOD_OWNER_EMAIL }}
+          QA_FOOD_OWNER_PASSWORD: ${{ secrets.QA_FOOD_OWNER_PASSWORD }}
+          QA_MARKET_OWNER_EMAIL: ${{ secrets.QA_MARKET_OWNER_EMAIL }}
+          QA_MARKET_OWNER_PASSWORD: ${{ secrets.QA_MARKET_OWNER_PASSWORD }}
         with:
           api-level: ${{ matrix.api }}
           target: google_apis
@@ -268,7 +274,7 @@ jobs:
 
   ios:
     needs: [plan, build-ios]
-    runs-on: macos-15
+    runs-on: ${{ vars.IOS_RUNNER || 'macos-15' }}
     timeout-minutes: 120
     strategy:
       fail-fast: false
@@ -353,6 +359,10 @@ jobs:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           BLOCK_HOSTS: ${{ inputs.block_hosts }}
           RECORD_VIDEO: ${{ inputs.record_video }}
+          QA_FOOD_OWNER_EMAIL: ${{ secrets.QA_FOOD_OWNER_EMAIL }}
+          QA_FOOD_OWNER_PASSWORD: ${{ secrets.QA_FOOD_OWNER_PASSWORD }}
+          QA_MARKET_OWNER_EMAIL: ${{ secrets.QA_MARKET_OWNER_EMAIL }}
+          QA_MARKET_OWNER_PASSWORD: ${{ secrets.QA_MARKET_OWNER_PASSWORD }}
         run: bash scripts/ios/run_agent.sh
 
       - name: Encrypt results
