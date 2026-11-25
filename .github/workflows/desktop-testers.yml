@@ -16,7 +16,7 @@ on:
         description: "Screen sizes (comma-separated WxH, e.g. 1280x800,1366x768,1920x1080,2560x1440). Every persona runs at each. Empty = the persona's own size. Linux: any size. Windows: up to 1920x1080 (larger is refused, the closest smaller size is used). macOS: fixed list up to 1920x1080 (1366x768 becomes 1344x756, 2560x1440 becomes 1920x1080); the actual size is written to resolution.txt"
         default: ""
       extra_args:
-        description: "Extra app arguments, e.g. a role: --role kiosk (personas with a role add their own --role). Window size flags of the new roles: --window 1080x1920"
+        description: "Extra app arguments, e.g. a role: --role kiosk (personas with a role add their own --role). Flags of the app: --role pos|kiosk|board|ads|customer, --board pickup|queue, --state idle|order|pay|payqr|paycard|done|cycle, --second-screen. The window size (--window WxH) always follows the resolution"
         default: ""
       lang:
         description: "Force one app language for every persona: ru, uz or en (empty = each persona's own)"
@@ -103,6 +103,7 @@ jobs:
         env:
           LABEL: ${{ matrix.label }}
           ROLE: ${{ matrix.role }}
+          APP_ARGS: ${{ matrix.app_args }}
           SECOND_SCREEN: ${{ matrix.second_screen }}
           EXTRA_ARGS: ${{ inputs.extra_args }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}

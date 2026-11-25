@@ -1039,7 +1039,8 @@
     "device": {
       "theme": "dark",
       "resolution": "1920x1080",
-      "role": "board"
+      "role": "board",
+      "app_args": "--board pickup"
     }
   },
   {
@@ -1051,7 +1052,8 @@
     "device": {
       "theme": "dark",
       "resolution": "3840x2160",
-      "role": "board"
+      "role": "board",
+      "app_args": "--board queue"
     }
   },
   {
@@ -1075,7 +1077,8 @@
     "device": {
       "theme": "light",
       "resolution": "1280x800",
-      "role": "customer"
+      "role": "customer",
+      "app_args": "--state cycle"
     }
   },
   {
@@ -1089,6 +1092,32 @@
       "resolution": "1920x1080",
       "role": "pos",
       "second_screen": "1280x800"
+    }
+  },
+  {
+    "id": "pos-second-screen-sim",
+    "platform": "desktop",
+    "profile": "Cashier, 30, tests the simulated second monitor inside one window.",
+    "goal": "Follow briefs/intop-pos-desktop-dual.md with the --second-screen demo (both screens in one window).",
+    "locale": "ru-RU",
+    "device": {
+      "theme": "light",
+      "resolution": "1920x1080",
+      "role": "pos",
+      "app_args": "--second-screen"
+    }
+  },
+  {
+    "id": "board-queue-1280x720",
+    "platform": "desktop",
+    "profile": "Cafe owner, 50, a 720p queue screen.",
+    "goal": "Run the queue board and check readability at 1280x720.",
+    "locale": "ru-RU",
+    "device": {
+      "theme": "dark",
+      "resolution": "1280x720",
+      "role": "board",
+      "app_args": "--board queue"
     }
   }
 ]

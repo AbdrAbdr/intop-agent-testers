@@ -29,7 +29,7 @@ if platform == "desktop":   # persona x OS x resolution; OSES = linux,windows,ma
                 rows.append({"persona": pid, "os": os_name, "runner": runners[os_name], "theme": d.get("theme", "light"),
                              "lang": os.environ.get("LANG_OVERRIDE") or personas[pid].get("locale", "en-US")[:2],
                              "resolution": res, "label": f"{pid}-{res}" if ress else pid,
-                             "role": d.get("role", ""), "second_screen": d.get("second_screen", "")})
+                             "role": d.get("role", ""), "app_args": d.get("app_args", ""), "second_screen": d.get("second_screen", "")})
     wanted = []
 for pid in wanted:
     p = personas[pid]

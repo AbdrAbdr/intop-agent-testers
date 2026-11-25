@@ -7,8 +7,9 @@ set -uo pipefail
 PERSONA="${OS_NAME}-${LABEL:-$PERSONA_ID}"; export PERSONA
 mkdir -p "results/$PERSONA"
 export APP_PID_FILE="$PWD/results/app.pid" APP_LOG="$PWD/results/$PERSONA/app.log"
-ARGS=(--window --lang "$LANG_CODE" --theme "$THEME"); [ "${DEMO:-true}" = true ] && ARGS+=(--demo)
+ARGS=(--window "${RES:-1920x1080}" --lang "$LANG_CODE" --theme "$THEME"); [ "${DEMO:-true}" = true ] && ARGS+=(--demo)
 [ -n "${ROLE:-}" ] && ARGS+=(--role "$ROLE")
+[ -n "${APP_ARGS:-}" ] && ARGS+=($APP_ARGS)
 [ -n "${EXTRA_ARGS:-}" ] && ARGS+=($EXTRA_ARGS)   # word-split on purpose: --window 1080x1920
 java -jar "$JAR" "${ARGS[@]}" > "$APP_LOG" 2>&1 &
 echo $! > "$APP_PID_FILE"
