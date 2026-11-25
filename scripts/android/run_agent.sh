@@ -28,6 +28,10 @@ adb shell settings put system font_scale "${FONT_SCALE:-1.0}"
 [ "${THEME:-light}" = dark ] && adb shell cmd uimode night yes
 adb emu geo fix "${GEO#*,}" "${GEO%,*}" >/dev/null 2>&1   # longitude first
 adb shell monkey -p "$APP_ID" -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1
+if [ -n "${LAUNCH_ARGS:-}" ]; then   # debug demo: am start with extras (the app is debuggable)
+  ACT=$(adb shell cmd package resolve-activity --brief -c android.intent.category.LAUNCHER "$APP_ID" | tail -1 | tr -d '\r')
+  adb shell am start -S -n "$ACT" $LAUNCH_ARGS >/dev/null 2>&1
+fi
 adb logcat -c; sleep 5
 # 4. Optional screen recording, kept in results/ (encrypted like the rest)
 REC=""

@@ -59,6 +59,9 @@ on:
       block_hosts:
         description: Hosts the app must not reach during tests (analytics, ads), space-separated
         default: "app.posthog.com eu.i.posthog.com us.i.posthog.com graph.facebook.com api.mixpanel.com api2.amplitude.com"
+      launch_args:
+        description: "Debug demo launch: iOS launch arguments (-kioskDemo menu) or Android am-start extras (--es kioskDemo menu). Empty = normal launch"
+        default: ""
       record_video:
         description: Record each phone's screen (encrypted with the results)
         type: boolean
@@ -257,6 +260,11 @@ jobs:
           QA_FOOD_OWNER_PASSWORD: ${{ secrets.QA_FOOD_OWNER_PASSWORD }}
           QA_MARKET_OWNER_EMAIL: ${{ secrets.QA_MARKET_OWNER_EMAIL }}
           QA_MARKET_OWNER_PASSWORD: ${{ secrets.QA_MARKET_OWNER_PASSWORD }}
+          QA_STAFF_WAITER_EMAIL: ${{ secrets.QA_STAFF_WAITER_EMAIL }}
+          QA_STAFF_WAITER_PASSWORD: ${{ secrets.QA_STAFF_WAITER_PASSWORD }}
+          QA_STAFF_COOK_EMAIL: ${{ secrets.QA_STAFF_COOK_EMAIL }}
+          QA_STAFF_COOK_PASSWORD: ${{ secrets.QA_STAFF_COOK_PASSWORD }}
+          LAUNCH_ARGS: ${{ inputs.launch_args }}
         with:
           api-level: ${{ matrix.api }}
           target: google_apis
@@ -365,6 +373,11 @@ jobs:
           QA_FOOD_OWNER_PASSWORD: ${{ secrets.QA_FOOD_OWNER_PASSWORD }}
           QA_MARKET_OWNER_EMAIL: ${{ secrets.QA_MARKET_OWNER_EMAIL }}
           QA_MARKET_OWNER_PASSWORD: ${{ secrets.QA_MARKET_OWNER_PASSWORD }}
+          QA_STAFF_WAITER_EMAIL: ${{ secrets.QA_STAFF_WAITER_EMAIL }}
+          QA_STAFF_WAITER_PASSWORD: ${{ secrets.QA_STAFF_WAITER_PASSWORD }}
+          QA_STAFF_COOK_EMAIL: ${{ secrets.QA_STAFF_COOK_EMAIL }}
+          QA_STAFF_COOK_PASSWORD: ${{ secrets.QA_STAFF_COOK_PASSWORD }}
+          LAUNCH_ARGS: ${{ inputs.launch_args }}
         run: bash scripts/ios/run_agent.sh
 
       - name: Encrypt results

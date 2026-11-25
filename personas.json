@@ -90,6 +90,15 @@
     "device": {"name": "Pixel 8, Android 15", "profile": "pixel_8", "android_api": 35, "font_scale": 1.0, "theme": "dark"}
   },
   {
+    "id": "dilnoza",
+    "platform": "android",
+    "profile": "Waitress in Tashkent, 27, reads Uzbek (Latin), checks that every label is translated and fits.",
+    "goal": "Do the main task and check every Uzbek text.",
+    "locale": "uz-UZ",
+    "geo": [41.2995, 69.2401],
+    "device": {"name": "Pixel 7, Android 14", "profile": "pixel_7", "android_api": 34, "font_scale": 1.0, "theme": "light"}
+  },
+  {
     "id": "clara",
     "platform": "ios",
     "profile": "Designer, 34, notices every misaligned pixel, refuses location access.",

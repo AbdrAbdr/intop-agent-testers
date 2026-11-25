@@ -101,3 +101,15 @@ Linux runs at the persona's resolution; Windows and macOS hosted runners are fix
 smaller than the app asks for, so expect layout findings). Rebuild the jars from a clean worktree of `origin/main`:
 `./gradlew packageUberJarForCurrentOS -Pintop.target=windows-x64|linux-x64|macos-arm64` in `apps/Desktop/pos`, encrypt with
 `openssl enc -aes-256-cbc -pbkdf2 -salt -pass file:<key>`, `gh release upload`. A later brief can log in to the QA tenant (`demo=false`).
+
+
+## All native apps (Staff, POS, Kiosk, Display) - 2026-11-25
+
+Assets of `builds-20261125`: `<app>-<android|ios>-0be683d.<apk|zip>.enc` for app = staff, pos, kiosk, display (debug Android builds with ids `org.bytebit.intop<app>.dev`; unsigned iOS Simulator builds, Debug config). Fetch with
+`bash scripts/fetch_build.sh <app>-android-0be683d.apk` / `<app>-ios-0be683d.zip` (iOS app path `ios-app/Intop{Staff,POS,Kiosk,Display}.app`).
+Briefs: `briefs/intop-{staff,pos,kiosk,display}.md`. New persona `dilnoza` (Android, uz).
+
+- Staff: real e-mail login of the QA waiter/cook (`QA_STAFF_{WAITER,COOK}_{EMAIL,PASSWORD}`); no enrollment needed.
+- POS: «Посмотреть демо» on the connect screen (fake data). Real enrollment needs a one-time code from Business (production write, not done).
+- Kiosk, Display: cannot be enrolled without an owner action. New workflow input `launch_args` starts the debug demo: iOS `-kioskDemo menu -kioskLang uz` / `-displayDemo kitchen`; Android `--es kioskDemo menu` / `--es demo kitchen`. Without it only the connect screen is reachable.
+- Builds are made on the maintainer's Mac (`gradlew :app:assembleDebug`, `xcodebuild -sdk iphonesimulator`, then `openssl enc` with the BUILD_DECRYPT_KEY key); nothing is run on that Mac.

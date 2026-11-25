@@ -17,7 +17,7 @@ xcrun simctl install "$UDID" "$APP" || { echo "install failed"; exit 1; }
 BID=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Info.plist" 2>/dev/null)
 if [ -n "$BID" ] && [ "$BID" != "$APP_ID" ]; then echo "Bundle id read from the app (differs from app_id)"; APP_ID=$BID; fi
 export APP_ID
-xcrun simctl launch "$UDID" "$APP_ID"; sleep 8
+xcrun simctl launch "$UDID" "$APP_ID" ${LAUNCH_ARGS:-}; sleep 8
 # First capture stores the screen width in points for gesture.sh
 python3 scripts/ios/screen.py "$RUNNER_TEMP/warmup" 00 >/dev/null 2>&1 || true
 # Optional screen recording, kept in results/ (encrypted like the rest)
