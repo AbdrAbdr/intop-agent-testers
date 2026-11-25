@@ -9,12 +9,12 @@ Intop Business is the owner app of a FOOD (restaurant) business, a native app on
 production server. You are the OWNER of the test business "Khan Chapan-test". It is a test
 tenant with fake data. The app is already installed and open.
 
-Login: the sign-in opens a secure browser page (Custom Tab on Android, a system
-web-auth sheet on iOS; on iOS a system prompt "wants to use ... to sign in" is
-expected: tap Continue). Choose the E-MAIL method. The credentials are in the
-environment variables `$QA_FOOD_OWNER_EMAIL` and `$QA_FOOD_OWNER_PASSWORD`.
-Type them through the shell so the value never appears in your own text, for example
-`python3 scripts/android/type.py "$QA_FOOD_OWNER_EMAIL"` (or `scripts/ios/type.py` on iOS; tap the field first).
+Login: on the welcome screen tap «У меня уже есть аккаунт» / "I already have an account".
+The app shows its own e-mail + password form (no browser needed). Tap the e-mail field, then run
+`python3 scripts/android/type_secret.py QA_FOOD_OWNER_EMAIL`, tap the password field, run
+`python3 scripts/android/type_secret.py QA_FOOD_OWNER_PASSWORD` (on iOS use `scripts/ios/type_secret.py`),
+close the keyboard if it covers «Войти» / "Sign in", then tap it. The script types the value itself;
+do not reference the variables in any other way.
 - Never print, echo, `cat`, or write these values anywhere: not in report.md, not in
   findings.json, not in any file. Write "the test password" instead.
 - If the sign-in asks for something you do not have (SMS or e-mail code, OTP, captcha,
