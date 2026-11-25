@@ -19,6 +19,7 @@ print(f"screenshot: {out}/{nn}.png (click space {cw}x{ch}; image {round(cw / k)}
 print(f"mouse at {tuple(pyautogui.position())}")
 pid = Path(os.environ.get("APP_PID_FILE", "results/app.pid"))
 alive = pid.exists() and psutil.pid_exists(int(pid.read_text() or 0))
+alive = alive or any((p.info["name"] or "").lower().startswith("java") for p in psutil.process_iter(["name"]))   # Git Bash pids are not Windows pids
 print("app process: " + ("running" if alive else "NOT RUNNING (crashed or closed): see results/*/app.log"))
 log = Path(os.environ.get("APP_LOG", ""))
 if not alive and log.is_file():
