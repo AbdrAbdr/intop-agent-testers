@@ -1,0 +1,16 @@
+name: list-devices
+on: workflow_dispatch
+jobs:
+  ios:
+    strategy: { fail-fast: false, matrix: { os: [macos-15, macos-26, macos-latest] } }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: |
+          sw_vers; ls /Applications | grep -i xcode
+          xcrun simctl list runtimes
+          xcrun simctl list devicetypes | grep -iE "iphone|ipad"
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager list device -c | tr '\n' ' '
