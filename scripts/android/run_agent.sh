@@ -70,6 +70,13 @@ claude -p "Read $BRIEF and personas.json, then do the mission until the final re
   --allowedTools "Bash(adb:*),Bash(python3 scripts/android/screen.py:*),Bash(python3 scripts/android/type.py:*),Bash(python3 scripts/android/type_secret.py:*),Bash(sleep:*),Bash(ls:*),Bash(cat:*),Bash(mkdir:*),Read,Write,Edit" \
   > results/agent-output.json 2> results/agent-errors.txt
 CODE=$?
+
+# report_fallback: if the turn limit cut the agent off before report.md, write it from the evidence
+if [ ! -s "results/$PERSONA/report.md" ]; then
+  claude -p "The test agent for PERSONA=$PERSONA ran out of turns before writing its report. Read notes.md (if any) and look at every screenshot in results/$PERSONA, then write results/$PERSONA/report.md and results/$PERSONA/findings.json in the format the brief $BRIEF asks for. Report only what the screenshots show; mark anything uncertain." \
+    --model "${MODEL:-sonnet}" --max-turns 25 --output-format json \
+    --allowedTools "Read,Write,Bash(ls:*)" > results/agent-output-fallback.json 2>> results/agent-errors.txt || true
+fi
 python3 scripts/agent_status.py results/agent-output.json results/agent-errors.txt "$PERSONA" || true
 if [ -n "$REC" ]; then
   touch /tmp/stop-rec; adb shell pkill -INT screenrecord; sleep 4; kill "$REC" 2>/dev/null
