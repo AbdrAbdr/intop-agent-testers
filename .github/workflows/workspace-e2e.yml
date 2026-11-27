@@ -1,0 +1,30 @@
+# Intop Workspace desktop e2e on macOS. The bundle is an encrypted release asset (compiled output + tests only);
+# results are encrypted with results_public.pem. Logs print counts only. Decrypt: bash scripts/workspace/collect.sh <run id>
+name: Workspace e2e
+on:
+  workflow_dispatch:
+    inputs:
+      asset: { description: "Encrypted bundle name without .enc", required: true }
+      tag: { description: "Release tag holding the asset", required: true }
+jobs:
+  e2e:
+    runs-on: macos-15
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix: { shard: [1, 2] }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - name: Run shard
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_DECRYPT_KEY: ${{ secrets.BUILD_DECRYPT_KEY }}
+        run: bash scripts/workspace/run_shard.sh "${{ inputs.asset }}" "${{ inputs.tag }}" ${{ matrix.shard }} 2
+      - name: Encrypt results
+        if: always()
+        run: bash scripts/encrypt_results.sh "workspace-e2e-${{ matrix.shard }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: "results-workspace-e2e-${{ matrix.shard }}", path: results.enc/, retention-days: 7 }
