@@ -12,6 +12,17 @@ from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import a11y  # noqa: E402
 
+# Test credentials never reach the log, even when one lands in a visible field (stand 28.11: a password typed
+# into the e-mail field was printed here). Every non-empty QA_* secret value is masked in all printed text.
+_SECRETS = sorted({v for k, v in os.environ.items() if k.startswith("QA_") and v and len(v) >= 4}, key=len, reverse=True)
+
+
+def _redact(text):
+    for v in _SECRETS:
+        text = text.replace(v, "•••")
+    return text
+
+
 
 def adb(*a, raw=False):
     r = subprocess.run(["adb", *a], capture_output=True, timeout=60)
@@ -41,7 +52,7 @@ for n in nodes:
         continue
     x1, y1, x2, y2 = map(int, b)
     kind = "field" if edit else ("button" if n.get("clickable") == "true" else "text")
-    print(f"- {kind} \"{(text or desc)[:70]}\" centre=({(x1 + x2) // 2},{(y1 + y2) // 2})")
+    print(_redact(f"- {kind} \"{(text or desc)[:70]}\" centre=({(x1 + x2) // 2},{(y1 + y2) // 2})"))
 try:
     memo = Path(os.environ.get("RUNNER_TEMP", "/tmp")) / "density_dpi"
     if not memo.exists():
