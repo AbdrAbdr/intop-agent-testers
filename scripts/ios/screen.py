@@ -11,6 +11,17 @@ from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import a11y  # noqa: E402
 
+# Test credentials never reach the log, even when one lands in a visible field (stand 28.11: a password typed
+# into the e-mail field was printed here). Every non-empty QA_* secret value is masked in all printed text.
+_SECRETS = sorted({v for k, v in os.environ.items() if k.startswith("QA_") and v and len(v) >= 4}, key=len, reverse=True)
+
+
+def _redact(text):
+    for v in _SECRETS:
+        text = text.replace(v, "•••")
+    return text
+
+
 UDID, APP = os.environ["UDID"], os.environ.get("APP_ID", "")
 
 
@@ -67,7 +78,7 @@ for kind, label, value, f in els:
     seen.add((label, value, cx, cy))
     name = "field" if "Field" in kind or kind == "TextArea" else ("button" if kind in ("Button", "Link", "Switch", "Cell", "Tab") else "text")
     extra = f" value \"{value[:40]}\"" if value and value != label else ""
-    print(f"- {name} \"{(label or value)[:70]}\"{extra} centre=({cx},{cy})")
+    print(_redact(f"- {name} \"{(label or value)[:70]}\"{extra} centre=({cx},{cy})"))
 try:
     check = a11y.ios(tree, wpt, hpt)
     if check:
