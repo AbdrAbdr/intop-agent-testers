@@ -45,6 +45,12 @@ class IOSMask(unittest.TestCase):
         self.assertEqual(img.getpixel((5, 830)), BLACK)
         self.assertEqual(img.getpixel((385, 843)), BLACK)
 
+    def test_text_area_label_stays_visible_but_a_secret_in_it_is_painted(self):
+        img = self.run_mask([("TextArea", "Разрешите уведомления о заказах", "", {"x": 10, "y": 100, "width": 300, "height": 40}),
+                             ("TextArea", "Спросите Intop", "мой пароль " + FAKE, {"x": 10, "y": 300, "width": 300, "height": 40})])
+        self.assertEqual(img.getpixel((50, 110)), WHITE)
+        self.assertEqual(img.getpixel((50, 310)), BLACK)
+
     def test_read_only_text_view_stays_visible(self):   # NoHyphenText is a UITextView: its words must stay readable
         img = self.run_mask([("TextView", "Разрешите уведомления о заказах", "", {"x": 10, "y": 100, "width": 300, "height": 40})])
         self.assertEqual(img.getpixel((50, 110)), WHITE)
