@@ -6,8 +6,8 @@ Read AGENT_BRIEF.md first. Budget: about 40 actions. Screenshot after every acti
 Fresh install: «Войти», switch «Телефон» → «Почта». E-mail field: `python3 scripts/ios/type_secret.py QA_STAFF_WAITER_EMAIL`; password field: same with `QA_STAFF_WAITER_PASSWORD`; «Войти». Never print the values. Pick «Khan Chapan-test» if asked. Allow/skip system dialogs.
 
 ## The one order
-0. If the Orders tab says «Смена не начата» / "Shift not started", tap «Начать смену» / "Start shift" once (cash 0 if asked). Write the time.
-1. Open the tables / hall view. Pick table **«Стол 10 QA Launch»** (if absent, «Стол 9 QA 20261110»; if neither, stop and report). Do NOT touch any existing order on that table.
+0. The waiter shift may already be started (11:06 today). If the Orders tab says «Смена не начата» / "Shift not started", tap «Начать смену» / "Start shift" once (cash 0 if asked). Write the time.
+1. Open the tables / hall view. Pick table **«Стол 12 QA Pilot 20261128»** (if absent, stop and report the tables you see). Do NOT touch any existing order on that table.
 2. Start a NEW order for that table, guests: 2.
 3. Add exactly TWO cheap dishes from two different categories, quantity 1 each (the two cheapest you can see quickly; avoid weighted items). Write their names and prices.
 4. Send the order to the kitchen («Отправить на кухню» / «В работу» / the main send button). Screenshot the result.
