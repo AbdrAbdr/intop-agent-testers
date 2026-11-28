@@ -18,8 +18,13 @@ _SECRETS = sorted({v for k, v in os.environ.items() if k.startswith("QA_") and v
 
 
 def _redact(text):
+    # Mask every piece of a secret (5+ chars), not only the whole value: a password typed into the e-mail field
+    # arrives glued to the address and cut at the print width, so a whole-value match misses it (stand 28.11, run 46129410596).
     for v in _SECRETS:
-        text = text.replace(v, "•••")
+        for size in range(len(v), min(len(v), 5) - 1, -1):
+            for i in range(len(v) - size + 1):
+                if v[i:i + size] in text:
+                    text = text.replace(v[i:i + size], "•••")
     return text
 
 
@@ -52,7 +57,7 @@ for n in nodes:
         continue
     x1, y1, x2, y2 = map(int, b)
     kind = "field" if edit else ("button" if n.get("clickable") == "true" else "text")
-    print(_redact(f"- {kind} \"{(text or desc)[:70]}\" centre=({(x1 + x2) // 2},{(y1 + y2) // 2})"))
+    print(_redact(f"- {kind} \"{_redact(text or desc)[:70]}\" centre=({(x1 + x2) // 2},{(y1 + y2) // 2})"))
 try:
     memo = Path(os.environ.get("RUNNER_TEMP", "/tmp")) / "density_dpi"
     if not memo.exists():

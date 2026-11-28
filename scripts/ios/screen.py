@@ -17,8 +17,13 @@ _SECRETS = sorted({v for k, v in os.environ.items() if k.startswith("QA_") and v
 
 
 def _redact(text):
+    # Mask every piece of a secret (5+ chars), not only the whole value: a password typed into the e-mail field
+    # arrives glued to the address and cut at the print width, so a whole-value match misses it (stand 28.11, run 46129410596).
     for v in _SECRETS:
-        text = text.replace(v, "•••")
+        for size in range(len(v), min(len(v), 5) - 1, -1):
+            for i in range(len(v) - size + 1):
+                if v[i:i + size] in text:
+                    text = text.replace(v[i:i + size], "•••")
     return text
 
 
@@ -77,8 +82,8 @@ for kind, label, value, f in els:
         continue
     seen.add((label, value, cx, cy))
     name = "field" if "Field" in kind or kind == "TextArea" else ("button" if kind in ("Button", "Link", "Switch", "Cell", "Tab") else "text")
-    extra = f" value \"{value[:40]}\"" if value and value != label else ""
-    print(_redact(f"- {name} \"{(label or value)[:70]}\"{extra} centre=({cx},{cy})"))
+    extra = f" value \"{_redact(value)[:40]}\"" if value and value != label else ""
+    print(_redact(f"- {name} \"{_redact(label or value)[:70]}\"{extra} centre=({cx},{cy})"))
 try:
     check = a11y.ios(tree, wpt, hpt)
     if check:
