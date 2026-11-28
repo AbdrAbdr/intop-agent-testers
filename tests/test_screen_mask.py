@@ -88,14 +88,14 @@ class NoRawFiles(unittest.TestCase):
 
     def test_ios_capture_is_read_into_memory_and_the_temp_dir_removed(self):
         before = set(self.shots_left())
-        data = self.ios["capture_png"](lambda path: open(path, "wb").write(b"\x89PNGfake"))
+        data = self.ios["capture_png"](lambda path: Path(path).write_bytes(b"\x89PNGfake"))
         self.assertEqual(data, b"\x89PNGfake")
         self.assertEqual(set(self.shots_left()), before)
 
     def test_ios_capture_failure_leaves_nothing(self):
         before = set(self.shots_left())
         def boom(path):
-            open(path, "wb").write(b"half")
+            Path(path).write_bytes(b"half")
             raise RuntimeError("simctl died")
         with self.assertRaises(RuntimeError):
             self.ios["capture_png"](boom)
