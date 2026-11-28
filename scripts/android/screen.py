@@ -29,6 +29,27 @@ def _redact(text):
 
 
 
+def mask(img, nodes, secrets=None):
+    """Pixels too (Bold 28.11): every input field (EditText, password) is painted over BEFORE the PNG is written, and so is any node
+    whose text holds a piece of a secret. No tree → the whole screen is withheld. Bounds are clipped to the screen."""
+    global _SECRETS
+    if secrets is not None:
+        _SECRETS = secrets
+    from PIL import ImageDraw
+    draw = ImageDraw.Draw(img)
+    W, H = img.size
+    if not nodes:
+        draw.rectangle([0, 0, W, H], fill=(0, 0, 0))
+        return
+    for n in nodes:
+        t = (n.get("text") or "") + " " + (n.get("content-desc") or "")
+        b = list(map(int, re.findall(r"\d+", n.get("bounds", ""))))
+        if len(b) == 4 and (n.get("class", "").endswith("EditText") or n.get("password") == "true" or _redact(t) != t):
+            box = [max(0, b[0]), max(0, b[1]), min(W, b[2]), min(H, b[3])]
+            if box[0] < box[2] and box[1] < box[3]:
+                draw.rectangle(box, fill=(0, 0, 0))
+
+
 def adb(*a, raw=False):
     r = subprocess.run(["adb", *a], capture_output=True, timeout=60)
     return r.stdout if raw else r.stdout.decode("utf-8", "replace")
@@ -47,18 +68,8 @@ try:
 except ET.ParseError:
     root = ET.Element("hierarchy")
 nodes = list(root.iter("node"))
-# Pixels too (Bold 28.11): while a QA secret is in the environment, every input field is painted over BEFORE the PNG is written,
-# and so is any element whose text holds a piece of a secret. No tree (dump failed) → the whole screen is withheld.
 if _SECRETS:
-    from PIL import ImageDraw
-    draw = ImageDraw.Draw(img)
-    if not nodes:
-        draw.rectangle([0, 0, w, h], fill=(0, 0, 0))
-    for n in nodes:
-        t = (n.get("text") or "") + " " + (n.get("content-desc") or "")
-        b = re.findall(r"\d+", n.get("bounds", ""))
-        if len(b) == 4 and (n.get("class", "").endswith("EditText") or n.get("password") == "true" or _redact(t) != t):
-            draw.rectangle(list(map(int, b)), fill=(0, 0, 0))
+    mask(img, nodes)
 img.resize((w // 2, h // 2)).save(out / f"{nn}.png")
 print(f"screenshot: {out}/{nn}.png (screen {w}x{h}; image is half size: multiply positions read on it by 2)")
 for n in nodes:
