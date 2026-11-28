@@ -1,6 +1,6 @@
 """Pixel masking of screenshots while QA secrets are set (Bold 28.11): a SYNTHETIC secret, no real screen, no PNG written.
 Cases asked for: no tree, a system input screen, a partly visible field, a secret piece in a non-field element."""
-import ast, re, unittest
+import ast, os, re, shutil, tempfile, unittest, glob
 from pathlib import Path
 from PIL import Image
 
@@ -11,9 +11,9 @@ FAKE = "Zq7-synthetic-Pw!"   # not a real credential
 def load(rel):
     src = (ROOT / rel).read_text()
     tree = ast.parse(src)
-    ns = {"re": re, "_SECRETS": [FAKE]}
+    ns = {"re": re, "os": os, "shutil": shutil, "tempfile": tempfile, "_SECRETS": [FAKE]}
     for node in tree.body:
-        if isinstance(node, ast.FunctionDef) and node.name in ("_redact", "mask"):
+        if isinstance(node, ast.FunctionDef) and node.name in ("_redact", "mask", "capture_png", "dump_ui"):
             exec(compile(ast.Module([node], []), rel, "exec"), ns)
     return ns
 
@@ -76,6 +76,54 @@ class AndroidMask(unittest.TestCase):
     def test_secret_piece_in_a_non_field_node(self):
         img = self.run_mask([{"class": "android.view.View", "content-desc": "x" + FAKE[3:12], "bounds": "[0,100][500,200]"}])
         self.assertEqual(img.getpixel((10, 150)), BLACK)
+
+
+class NoRawFiles(unittest.TestCase):
+    """The entrypoints keep no raw screen or tree anywhere, also when capture or read fails."""
+    ios = load("scripts/ios/screen.py")
+    android = load("scripts/android/screen.py")
+
+    def shots_left(self):
+        return glob.glob(os.path.join(tempfile.gettempdir(), "intop-shot-*"))
+
+    def test_ios_capture_is_read_into_memory_and_the_temp_dir_removed(self):
+        before = set(self.shots_left())
+        data = self.ios["capture_png"](lambda path: open(path, "wb").write(b"\x89PNGfake"))
+        self.assertEqual(data, b"\x89PNGfake")
+        self.assertEqual(set(self.shots_left()), before)
+
+    def test_ios_capture_failure_leaves_nothing(self):
+        before = set(self.shots_left())
+        def boom(path):
+            open(path, "wb").write(b"half")
+            raise RuntimeError("simctl died")
+        with self.assertRaises(RuntimeError):
+            self.ios["capture_png"](boom)
+        self.assertEqual(set(self.shots_left()), before)
+
+    def test_android_tree_through_stdout_touches_no_file(self):
+        calls = []
+        def adb(*a):
+            calls.append(a)
+            return 'UI hierchary dumped to: /dev/tty <?xml version="1.0"?><hierarchy><node/></hierarchy>\n'
+        xml = self.android["dump_ui"](adb)
+        self.assertTrue(xml.startswith("<") and xml.endswith("</hierarchy>"))
+        self.assertEqual(len(calls), 1)                      # no file written, nothing to remove
+
+    def test_android_fallback_file_is_removed_even_when_the_read_fails(self):
+        calls = []
+        def adb(*a):
+            calls.append(a)
+            if a[:3] == ("exec-out", "uiautomator", "dump"):
+                return "ERROR: could not open /dev/tty"
+            if a[0] == "exec-out" and a[1] == "cat":
+                raise RuntimeError("adb lost the device")
+            return ""
+        with self.assertRaises(RuntimeError):
+            self.android["dump_ui"](adb)
+        rm = [a for a in calls if a[:3] == ("shell", "rm", "-f")]
+        self.assertEqual(len(rm), 1)
+        self.assertTrue(rm[0][3].startswith("/data/local/tmp/ui-"))
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ The PNG is resized to the screen size in POINTS, so a position read on the
 image goes straight to `bash scripts/ios/gesture.sh tap X Y`. Also warns
 when the app is no longer running or a crash report just appeared, and prints an
 accessibility check (controls with no name, touch targets under 44 pt)."""
-import json, os, subprocess, sys, time
+import io, json, os, shutil, subprocess, sys, tempfile, time
 from pathlib import Path
 from PIL import Image
 
@@ -25,6 +25,20 @@ def _redact(text):
                 if v[i:i + size] in text:
                     text = text.replace(v[i:i + size], "•••")
     return text
+
+
+def capture_png(shoot):
+    """The raw screen never lands in the artifacts folder: it is written to a private 0700 temp dir outside it, read into memory
+    and removed in `finally`, also when the capture or the read fails (Bold 28.11)."""
+    d = tempfile.mkdtemp(prefix="intop-shot-")
+    try:
+        os.chmod(d, 0o700)
+        path = os.path.join(d, "raw.png")
+        shoot(path)
+        with open(path, "rb") as f:
+            return f.read()
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
 
 
 def mask(img, els, scale, secrets=None):
@@ -74,15 +88,13 @@ def walk(n, acc):
 
 out, nn = Path(sys.argv[1]), sys.argv[2]
 out.mkdir(parents=True, exist_ok=True)
-raw = out / f"{nn}-raw.png"
-run("xcrun", "simctl", "io", UDID, "screenshot", "--type=png", str(raw))
 try:
     tree = json.loads(run("axe", "describe-ui", "--udid", UDID))
 except json.JSONDecodeError:
     tree = []
 els = []
 walk(tree, els)
-img = Image.open(raw).convert("RGB")
+img = Image.open(io.BytesIO(capture_png(lambda path: run("xcrun", "simctl", "io", UDID, "screenshot", "--type=png", path)))).convert("RGB")
 memo = Path(os.environ.get("RUNNER_TEMP", "/tmp")) / "width_points"
 root = tree[0] if isinstance(tree, list) and tree else tree
 wpt = int((root.get("frame") or {}).get("width", 0)) if isinstance(root, dict) else 0
@@ -97,7 +109,6 @@ hpt = img.size[1] / scale
 if _SECRETS:
     mask(img, els, scale)
 img.resize((round(img.size[0] / scale), round(hpt))).save(out / f"{nn}.png")
-raw.unlink()
 print(f"screenshot: {out}/{nn}.png ({wpt}x{round(hpt)} points; positions on the image = positions to tap)")
 seen = set()
 for kind, label, value, f in els:

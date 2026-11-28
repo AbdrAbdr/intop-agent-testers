@@ -50,6 +50,20 @@ def mask(img, nodes, secrets=None):
                 draw.rectangle(box, fill=(0, 0, 0))
 
 
+def dump_ui(adb_fn):
+    """The UI tree is read through stdout (`uiautomator dump /dev/tty`); nothing stays on the device. If a device refuses /dev/tty,
+    a random path is used and removed in `finally`, also when the read fails (Bold 28.11)."""
+    out = adb_fn("exec-out", "uiautomator", "dump", "/dev/tty")
+    if "<hierarchy" in out:
+        return out[out.find("<"):out.rfind(">") + 1]
+    path = "/data/local/tmp/ui-%s.xml" % os.urandom(6).hex()
+    try:
+        adb_fn("shell", "uiautomator", "dump", path)
+        return adb_fn("exec-out", "cat", path)
+    finally:
+        adb_fn("shell", "rm", "-f", path)
+
+
 def adb(*a, raw=False):
     r = subprocess.run(["adb", *a], capture_output=True, timeout=60)
     return r.stdout if raw else r.stdout.decode("utf-8", "replace")
@@ -61,8 +75,7 @@ png = adb("exec-out", "screencap", "-p", raw=True)
 png = png[png.find(b"\x89PNG"):] if b"\x89PNG" in png else png  # foldables print a warning first
 img = Image.open(io.BytesIO(png)).convert("RGB")
 w, h = img.size
-adb("shell", "uiautomator", "dump", "/sdcard/ui.xml")
-xml = adb("exec-out", "cat", "/sdcard/ui.xml")
+xml = dump_ui(adb)
 try:
     root = ET.fromstring(xml[xml.find("<"):])
 except ET.ParseError:
