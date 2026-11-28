@@ -58,7 +58,9 @@ def mask(img, els, scale, secrets=None):
         if not f or f.get("width", 0) <= 0 or f.get("height", 0) <= 0:
             continue
         text = label + " " + value
-        if "Field" in kind or kind in ("TextArea", "TextView") or _redact(text) != text:
+        # Editable inputs only: read-only text (SwiftUI Text, a UITextView used for unhyphenated labels) stays visible;
+        # a secret piece in ANY element is still painted by the text match.
+        if "Field" in kind or kind == "TextArea" or _redact(text) != text:
             x, y, w, h = (f.get(k, 0) * scale for k in ("x", "y", "width", "height"))
             box = [max(0, x), max(0, y), min(W, x + w), min(H, y + h)]
             if box[0] < box[2] and box[1] < box[3]:

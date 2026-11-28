@@ -45,6 +45,10 @@ class IOSMask(unittest.TestCase):
         self.assertEqual(img.getpixel((5, 830)), BLACK)
         self.assertEqual(img.getpixel((385, 843)), BLACK)
 
+    def test_read_only_text_view_stays_visible(self):   # NoHyphenText is a UITextView: its words must stay readable
+        img = self.run_mask([("TextView", "Разрешите уведомления о заказах", "", {"x": 10, "y": 100, "width": 300, "height": 40})])
+        self.assertEqual(img.getpixel((50, 110)), WHITE)
+
     def test_secret_piece_in_a_non_field_element(self):   # the password typed into the e-mail field, shown in a label, cut
         img = self.run_mask([("StaticText", "owner@x.uz" + FAKE[:9], "", {"x": 10, "y": 100, "width": 200, "height": 20}),
                              ("Button", "Войти", "", {"x": 10, "y": 200, "width": 200, "height": 44})])
