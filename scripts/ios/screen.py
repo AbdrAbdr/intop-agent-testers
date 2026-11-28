@@ -122,9 +122,10 @@ for kind, label, value, f in els:
     extra = f" value \"{_redact(value)[:40]}\"" if value and value != label else ""
     print(_redact(f"- {name} \"{_redact(label or value)[:70]}\"{extra} centre=({cx},{cy})"))
 try:
+    a11y.REDACT = _redact
     check = a11y.ios(tree, wpt, hpt)
     if check:
-        print(check)
+        print(_redact(check))
 except Exception:  # the check must never break seeing the screen
     pass
 if APP and APP not in run("xcrun", "simctl", "spawn", UDID, "launchctl", "list"):

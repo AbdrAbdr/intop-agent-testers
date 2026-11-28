@@ -45,11 +45,16 @@ def _bounds(n):
     return tuple(map(int, b)) if len(b) == 4 else None
 
 
+# Set by screen.py to its secret redaction: every control name is redacted HERE, before any cut ([:30]) or join,
+# so a password piece in a small control's label never reaches the report (Bold 28.11).
+REDACT = lambda s: s
+
+
 def _name(n):
     for m in n.iter("node"):
         t = (m.get("text") or "").strip() or (m.get("content-desc") or "").strip()
         if t:
-            return t
+            return REDACT(t)
     return ""
 
 
@@ -98,7 +103,7 @@ def _ios_kind(n):
 def _ios_name(n):
     label = (n.get("AXLabel") or n.get("title") or "").strip()
     if label:
-        return label
+        return REDACT(label)
     for c in n.get("children") or []:
         if isinstance(c, dict):
             label = _ios_name(c)

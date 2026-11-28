@@ -99,13 +99,14 @@ try:
     if not memo.exists():
         dpi = re.findall(r"\d+", adb("shell", "wm", "density"))
         memo.write_text(dpi[-1] if dpi else "160")  # last one = override, if any
+    a11y.REDACT = _redact
     check = a11y.android(root, int(memo.read_text()), w, h)
     if check:
-        print(check)
+        print(_redact(check))
 except Exception:  # the check must never break seeing the screen
     pass
 crash = adb("logcat", "-d", "-b", "crash") + adb("logcat", "-d", "AndroidRuntime:E", "ReactNativeJS:E", "*:S")
 adb("logcat", "-c")
 lines = [x for x in crash.splitlines() if x.strip() and not x.startswith("-----")]
 if lines:
-    print("ERRORS SINCE LAST SCREENSHOT:\n" + "\n".join(lines[-15:]))
+    print(_redact("ERRORS SINCE LAST SCREENSHOT:\n" + "\n".join(lines[-15:])))

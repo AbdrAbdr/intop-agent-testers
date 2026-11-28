@@ -126,5 +126,40 @@ class NoRawFiles(unittest.TestCase):
         self.assertTrue(rm[0][3].startswith("/data/local/tmp/ui-"))
 
 
+class A11yReportRedacted(unittest.TestCase):
+    """The a11y report prints names of small controls cut to 30 chars: the secret is removed BEFORE the cut."""
+    def setUp(self):
+        import importlib, sys
+        sys.path.insert(0, str(ROOT / "scripts"))
+        self.a11y = importlib.import_module("a11y")
+        self.a11y.REDACT = load("scripts/ios/screen.py")["_redact"]
+
+    def tearDown(self):
+        self.a11y.REDACT = lambda s: s
+
+    def test_ios_small_control_label_with_a_secret(self):
+        tree = [{"type": "Application", "frame": {"x": 0, "y": 0, "width": 390, "height": 844}, "children": [
+            {"type": "Button", "AXLabel": "owner@x.uz" + FAKE, "frame": {"x": 10, "y": 10, "width": 20, "height": 20}}]}]
+        self.a11y.REDACT = lambda s: s
+        self.assertIn(FAKE[:5], self.a11y.ios(tree, 390, 844) or "")   # the case really reaches the report
+        self.a11y.REDACT = load("scripts/ios/screen.py")["_redact"]
+        out = self.a11y.ios(tree, 390, 844) or ""
+        for size in range(5, len(FAKE) + 1):
+            for i in range(len(FAKE) - size + 1):
+                self.assertNotIn(FAKE[i:i + size], out)
+
+    def test_android_small_control_label_with_a_cut_secret(self):
+        import xml.etree.ElementTree as ET
+        xml = ('<hierarchy><node class="android.widget.FrameLayout" bounds="[0,0][1080,2400]">'
+               '<node class="android.widget.Button" clickable="true" bounds="[100,100][160,140]" text="x%s"/></node></hierarchy>') % FAKE[:11]
+        self.a11y.REDACT = lambda s: s
+        self.assertIn(FAKE[:7], self.a11y.android(ET.fromstring(xml), 420, 1080, 2400) or "")   # the case really reaches the report
+        self.a11y.REDACT = load("scripts/android/screen.py")["_redact"]
+        out = self.a11y.android(ET.fromstring(xml), 420, 1080, 2400) or ""
+        self.assertIn("touch target", out)
+        self.assertNotIn(FAKE[:11], out)
+        self.assertNotIn(FAKE[2:9], out)
+
+
 if __name__ == "__main__":
     unittest.main()
