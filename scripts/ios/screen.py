@@ -70,6 +70,19 @@ else:
     wpt = img.size[0] // 3
 scale = img.size[0] / wpt
 hpt = img.size[1] / scale
+# Pixels too (Bold 28.11): while a QA secret is in the environment, every input field is painted over BEFORE the PNG is written,
+# and so is any element whose text holds a piece of a secret (a password typed into the e-mail field, cut or not).
+if _SECRETS:
+    from PIL import ImageDraw
+    draw = ImageDraw.Draw(img)
+    if not els:   # no accessibility tree (system sheet, crash): nothing proves the screen is clean → withheld
+        draw.rectangle([0, 0, img.size[0], img.size[1]], fill=(0, 0, 0))
+    for kind, label, value, f in els:
+        if not f or f.get("width", 0) <= 0:
+            continue
+        if "Field" in kind or kind == "TextArea" or _redact(label + " " + value) != label + " " + value:
+            x, y, w, h = (f.get(k, 0) * scale for k in ("x", "y", "width", "height"))
+            draw.rectangle([x, y, x + w, y + h], fill=(0, 0, 0))
 img.resize((round(img.size[0] / scale), round(hpt))).save(out / f"{nn}.png")
 raw.unlink()
 print(f"screenshot: {out}/{nn}.png ({wpt}x{round(hpt)} points; positions on the image = positions to tap)")

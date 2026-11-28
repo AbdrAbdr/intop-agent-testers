@@ -40,8 +40,6 @@ png = adb("exec-out", "screencap", "-p", raw=True)
 png = png[png.find(b"\x89PNG"):] if b"\x89PNG" in png else png  # foldables print a warning first
 img = Image.open(io.BytesIO(png)).convert("RGB")
 w, h = img.size
-img.resize((w // 2, h // 2)).save(out / f"{nn}.png")
-print(f"screenshot: {out}/{nn}.png (screen {w}x{h}; image is half size: multiply positions read on it by 2)")
 adb("shell", "uiautomator", "dump", "/sdcard/ui.xml")
 xml = adb("exec-out", "cat", "/sdcard/ui.xml")
 try:
@@ -49,6 +47,20 @@ try:
 except ET.ParseError:
     root = ET.Element("hierarchy")
 nodes = list(root.iter("node"))
+# Pixels too (Bold 28.11): while a QA secret is in the environment, every input field is painted over BEFORE the PNG is written,
+# and so is any element whose text holds a piece of a secret. No tree (dump failed) → the whole screen is withheld.
+if _SECRETS:
+    from PIL import ImageDraw
+    draw = ImageDraw.Draw(img)
+    if not nodes:
+        draw.rectangle([0, 0, w, h], fill=(0, 0, 0))
+    for n in nodes:
+        t = (n.get("text") or "") + " " + (n.get("content-desc") or "")
+        b = re.findall(r"\d+", n.get("bounds", ""))
+        if len(b) == 4 and (n.get("class", "").endswith("EditText") or n.get("password") == "true" or _redact(t) != t):
+            draw.rectangle(list(map(int, b)), fill=(0, 0, 0))
+img.resize((w // 2, h // 2)).save(out / f"{nn}.png")
+print(f"screenshot: {out}/{nn}.png (screen {w}x{h}; image is half size: multiply positions read on it by 2)")
 for n in nodes:
     text, desc = (n.get("text") or "").strip(), (n.get("content-desc") or "").strip()
     edit = n.get("class", "").endswith("EditText")
